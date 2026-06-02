@@ -1,0 +1,2264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#020817">
+<title>NET+ PRO · N10-009 v2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap">
+<style>
+:root{
+  --bg:#020817;--bg2:#0a1628;--bg3:#0f1f38;--bg4:#162847;--bg5:#1e3358;
+  --border:#1e3358;--border2:#2a4060;--text:#e2e8f0;--text2:#94a3b8;
+  --text3:#64748b;--text4:#475569;
+  --a:#22d3ee;--a2:#818cf8;--a3:#e879f9;
+  --g:#4ade80;--y:#fbbf24;--r:#f87171;--o:#fb923c;--pk:#f472b6;
+  --d1:#22d3ee;--d2:#818cf8;--d3:#4ade80;--d4:#fb923c;--d5:#f472b6;
+  --r14:14px;--r10:10px;
+  --st:env(safe-area-inset-top,0px);--sb:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;overscroll-behavior:none;}
+#app{height:100%;display:flex;flex-direction:column;max-width:480px;margin:0 auto;position:relative;overflow:hidden;}
+.scr{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--bg);transform:translateX(100%);transition:transform .28s cubic-bezier(.4,0,.2,1);}
+.scr.active{transform:translateX(0);}
+.scr.prev{transform:translateX(-25%);}
+.scroll{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding-bottom:calc(80px + var(--sb));}
+.scroll::-webkit-scrollbar{display:none;}
+#nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;
+  background:rgba(2,8,23,.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-top:1px solid var(--border);padding:8px 0 calc(8px + var(--sb));display:flex;z-index:900;}
+.nb{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;
+  color:var(--text4);cursor:pointer;font-family:'Syne',sans-serif;font-size:9px;letter-spacing:.5px;
+  text-transform:uppercase;transition:color .2s;padding:6px 0;min-height:44px;justify-content:center;}
+.nb.on{color:var(--a);}
+.ni{font-size:20px;line-height:1;}
+.tb{padding:calc(14px + var(--st)) 16px 10px;display:flex;align-items:center;gap:8px;
+  border-bottom:1px solid var(--border);background:var(--bg);flex-shrink:0;}
+.tt{font-size:15px;font-weight:700;letter-spacing:.5px;flex:1;}
+.ts{font-size:10px;color:var(--text3);letter-spacing:1.5px;text-transform:uppercase;}
+.bk{background:none;border:none;color:var(--text3);cursor:pointer;font-size:22px;
+  padding:0 10px 0 0;line-height:1;min-width:44px;min-height:44px;display:flex;align-items:center;}
+.card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r14);padding:16px;margin-bottom:10px;}
+.ca{border-color:var(--a);background:linear-gradient(135deg,var(--bg2),var(--bg3));}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid var(--border2);
+  border-radius:var(--r10);padding:13px 18px;font-family:'Syne',sans-serif;font-size:13px;
+  font-weight:600;cursor:pointer;transition:all .15s;min-height:44px;}
+.bp{background:var(--a);color:#000;border-color:var(--a);}
+.bg{background:transparent;color:var(--text2);}
+.bf{width:100%;}
+.br{display:flex;gap:8px;}
+.btn:active{transform:scale(.97);}
+.pill{display:inline-flex;align-items:center;padding:3px 10px;border-radius:100px;font-size:11px;font-weight:600;}
+.pb{height:4px;background:var(--bg4);border-radius:2px;overflow:hidden;}
+.pf{height:100%;border-radius:2px;transition:width .4s;}
+.xb{height:6px;background:var(--bg4);border-radius:3px;overflow:hidden;}
+.xf{height:100%;background:linear-gradient(90deg,var(--a),var(--a2));border-radius:3px;transition:width .6s;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.sb{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r14);padding:14px;text-align:center;}
+.sn{font-family:'Space Mono',monospace;font-size:24px;font-weight:700;line-height:1;}
+.sl{font-size:10px;color:var(--text3);letter-spacing:1px;text-transform:uppercase;margin-top:4px;}
+input,textarea{
+  background:var(--bg4);border:1px solid var(--border2);border-radius:var(--r10);
+  padding:13px 14px;color:var(--text);font-family:'Syne',sans-serif;font-size:16px;
+  width:100%;outline:none;transition:border-color .2s;
+  -webkit-appearance:none;appearance:none;
+}
+input:focus,textarea:focus{border-color:var(--a);}
+textarea{resize:vertical;min-height:90px;font-size:16px;}
+#toast{position:fixed;top:calc(18px + var(--st));left:50%;
+  transform:translateX(-50%) translateY(-70px);
+  background:var(--bg4);border:1px solid var(--a);border-radius:10px;
+  padding:10px 18px;font-size:13px;color:var(--text);z-index:9999;
+  transition:transform .3s;white-space:nowrap;pointer-events:none;max-width:90vw;}
+#toast.show{transform:translateX(-50%) translateY(0);}
+.mbg{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:5000;
+  display:flex;align-items:flex-end;padding-bottom:var(--sb);
+  opacity:0;pointer-events:none;transition:opacity .25s;}
+.mbg.open{opacity:1;pointer-events:all;}
+.modal{background:var(--bg2);border-radius:24px 24px 0 0;width:100%;
+  max-height:88vh;overflow-y:auto;padding:20px 16px 24px;
+  border-top:1px solid var(--border2);}
+.mh{width:40px;height:4px;background:var(--border2);border-radius:2px;margin:0 auto 18px;}
+.ring-svg{transform:rotate(-90deg);}
+.rt{fill:none;stroke:var(--bg4);}
+.rf{fill:none;stroke-linecap:round;transition:stroke-dashoffset .7s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes bounce{0%,100%{transform:translateY(0)}40%{transform:translateY(-5px)}}
+.fi{animation:fadeIn .3s ease forwards;}
+.think span{display:inline-block;width:7px;height:7px;border-radius:50%;
+  background:var(--a);animation:bounce 1s infinite;}
+.think span:nth-child(2){animation-delay:.15s;}
+.think span:nth-child(3){animation-delay:.3s;}
+.sh{font-size:10px;color:var(--text4);letter-spacing:2px;text-transform:uppercase;
+  margin-bottom:8px;padding-left:2px;}
+.tab-row{display:flex;gap:6px;padding:10px 16px;overflow-x:auto;flex-shrink:0;}
+.tab-row::-webkit-scrollbar{display:none;}
+.tab{flex-shrink:0;padding:7px 14px;border-radius:100px;border:1px solid var(--border2);
+  background:transparent;color:var(--text3);font-family:'Syne',sans-serif;
+  font-size:12px;cursor:pointer;transition:all .15s;min-height:36px;}
+.tab.on{background:var(--a);color:#000;border-color:var(--a);}
+.fc-wrap{cursor:pointer;user-select:none;perspective:1000px;}
+.fc-inner{position:relative;transition:transform .4s;transform-style:preserve-3d;}
+.fc-wrap.flipped .fc-inner{transform:rotateY(180deg);}
+.fc-f,.fc-b{backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  border-radius:var(--r14);padding:26px 20px;min-height:220px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;border:1.5px solid var(--border2);}
+.fc-b{position:absolute;inset:0;background:var(--bg3);transform:rotateY(180deg);}
+.tag{display:inline-block;padding:2px 8px;border-radius:6px;font-size:11px;
+  background:var(--bg4);border:1px solid var(--border2);color:var(--text3);margin:2px;}
+.scenario-box{background:var(--bg4);border-left:3px solid var(--y);
+  border-radius:0 var(--r10) var(--r10) 0;padding:14px;}
+.badge{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;
+  justify-content:center;font-size:20px;border:2px solid var(--border2);}
+.badge.on{border-color:var(--y);background:rgba(251,191,36,.12);}
+.conf-modal{background:var(--bg2);border-radius:24px 24px 0 0;width:100%;padding:24px 16px 28px;}
+.bar-chart{display:flex;align-items:flex-end;gap:4px;height:60px;margin-top:8px;}
+.bar{flex:1;border-radius:3px 3px 0 0;min-width:0;transition:height .4s;}
+</style>
+</head>
+<body>
+<div id="app">
+<!-- HOME -->
+<div id="s-home" class="scr">
+  <div class="tb" style="border:none;padding-bottom:4px;">
+    <div style="display:flex;align-items:center;gap:8px;">
+      <div style="width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--a),var(--a2));display:flex;align-items:center;justify-content:center;font-size:14px;">📡</div>
+      <div><div class="tt" style="font-size:14px;">NET+ PRO</div><div class="ts">N10-009 v2</div></div>
+    </div>
+    <div style="margin-left:auto;text-align:right;">
+      <div style="font-family:'Space Mono',monospace;font-size:12px;color:var(--a);" id="h-xp">0 XP</div>
+      <div style="font-size:10px;color:var(--text4);" id="h-st">🔥 0 streak</div>
+    </div>
+  </div>
+  <div class="scroll" style="padding:12px 16px;">
+    <div class="card ca fi" style="margin-bottom:12px;">
+      <div style="display:flex;align-items:center;gap:14px;">
+        <div style="position:relative;flex-shrink:0;">
+          <svg width="68" height="68" class="ring-svg"><circle class="rt" cx="34" cy="34" r="27" stroke-width="5"/><circle class="rf" id="rring" cx="34" cy="34" r="27" stroke="var(--a)" stroke-width="5" stroke-dasharray="169.6" stroke-dashoffset="169.6"/></svg>
+          <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+            <div style="font-family:'Space Mono',monospace;font-size:15px;font-weight:700;color:var(--a);" id="rpct">0%</div>
+            <div style="font-size:8px;color:var(--text4);">READY</div>
+          </div>
+        </div>
+        <div style="flex:1;">
+          <div style="font-size:15px;font-weight:700;margin-bottom:3px;" id="h-greet">Welcome back</div>
+          <div style="font-size:12px;color:var(--text2);line-height:1.5;" id="h-tip">Start with flashcards to build your readiness score.</div>
+          <div style="margin-top:8px;">
+            <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text3);margin-bottom:3px;">
+              <span>Daily Goal</span><span id="h-gp">0%</span>
+            </div>
+            <div class="xb"><div class="xf" id="h-gb" style="width:0%"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="h-countdown" style="margin-bottom:12px;display:none;"></div>
+    <div class="sh">Exam Domains</div>
+    <div id="h-domains"></div>
+    <div class="sh" style="margin-top:12px;">Quick Study</div>
+    <div class="g2" style="margin-bottom:10px;">
+      <button class="btn bg card" style="flex-direction:column;gap:6px;padding:14px;" onclick="qstart('mf')"><span style="font-size:24px;">🃏</span><span style="font-size:11px;color:var(--text2);">Mixed<br>Flashcards</span></button>
+      <button class="btn bg card" style="flex-direction:column;gap:6px;padding:14px;" onclick="qstart('qq')"><span style="font-size:24px;">⚡</span><span style="font-size:11px;color:var(--text2);">Quick<br>Quiz 10Q</span></button>
+      <button class="btn bg card" style="flex-direction:column;gap:6px;padding:14px;" onclick="goscr('s-sub');subTab('practice')"><span style="font-size:24px;">🧮</span><span style="font-size:11px;color:var(--text2);">Subnetting<br>Lab</span></button>
+      <button class="btn bg card" style="flex-direction:column;gap:6px;padding:14px;" onclick="goscr('s-ports');portsTab('drill')"><span style="font-size:24px;">🔌</span><span style="font-size:11px;color:var(--text2);">Ports &amp;<br>Protocols</span></button>
+    </div>
+    <div class="sh">Achievements</div>
+    <div id="h-badges" style="display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;"></div>
+  </div>
+</div>
+
+<!-- FLASHCARD SCREEN -->
+<div id="s-flash" class="scr">
+  <div class="tb">
+    <button class="bk" onclick="goback()">←</button>
+    <div><div class="tt" id="ft">Flashcards</div><div class="ts" id="fs">All domains</div></div>
+    <div style="margin-left:auto;font-family:'Space Mono',monospace;font-size:11px;color:var(--text3);" id="fc">0/0</div>
+  </div>
+  <div class="tab-row" id="f-tabs" style="display:none;"></div>
+  <div class="scroll" style="padding:12px 16px;" id="f-content"></div>
+</div>
+
+<!-- QUIZ SCREEN -->
+<div id="s-quiz" class="scr">
+  <div class="tb">
+    <button class="bk" onclick="goback()">←</button>
+    <div style="flex:1;">
+      <div class="tt" id="qt">Quiz</div>
+      <div style="display:flex;align-items:center;gap:8px;margin-top:4px;">
+        <div class="pb" style="flex:1;"><div class="pf" id="qprog" style="width:0%;background:var(--a);"></div></div>
+        <div style="font-size:10px;color:var(--text3);font-family:'Space Mono',monospace;" id="qct">0/0</div>
+      </div>
+    </div>
+    <button style="background:none;border:none;color:var(--text3);font-size:22px;cursor:pointer;min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:center;" onclick="goback()">✕</button>
+  </div>
+  <div class="scroll" style="padding:12px 16px;" id="q-content"></div>
+</div>
+
+<!-- STUDY/DOMAIN SCREEN -->
+<div id="s-study" class="scr">
+  <div class="tb">
+    <button class="bk" onclick="goback()">←</button>
+    <div><div class="tt" id="std-t"></div><div class="ts" id="std-s"></div></div>
+  </div>
+  <div class="tab-row">
+    <button class="tab on" onclick="stdTab('ov')">Overview</button>
+    <button class="tab" onclick="stdTab('fc')">Flashcards</button>
+    <button class="tab" onclick="stdTab('qz')">Quiz</button>
+    <button class="tab" onclick="stdTab('ai')">AI Tutor</button>
+  </div>
+  <div class="scroll" style="padding:12px 16px;" id="std-content"></div>
+</div>
+
+<!-- EXAM SCREEN -->
+<div id="s-exam" class="scr">
+  <div class="tb">
+    <button class="bk" onclick="xexit()">←</button>
+    <div style="flex:1;">
+      <div class="tt" id="ex-t">Mock Exam</div>
+      <div style="display:flex;align-items:center;gap:8px;margin-top:4px;">
+        <div class="pb" style="flex:1;"><div class="pf" id="ex-p" style="width:0%;background:var(--o);"></div></div>
+        <div style="font-size:11px;color:var(--o);font-family:'Space Mono',monospace;" id="ex-tim">90:00</div>
+      </div>
+    </div>
+  </div>
+  <div class="scroll" style="padding:12px 16px;" id="ex-content"></div>
+</div>
+
+<!-- SUBNET SCREEN -->
+<div id="s-sub" class="scr">
+  <div class="tb"><button class="bk" onclick="goback()">←</button><div class="tt">Subnetting Lab</div></div>
+  <div class="tab-row">
+    <button class="tab on" onclick="subTab('practice')">Practice</button>
+    <button class="tab" onclick="subTab('ref')">Reference</button>
+    <button class="tab" onclick="subTab('exam')">Exam Mode</button>
+  </div>
+  <div class="scroll" style="padding:12px 16px;" id="sub-c"></div>
+</div>
+
+<!-- PORTS SCREEN -->
+<div id="s-ports" class="scr">
+  <div class="tb"><button class="bk" onclick="goback()">←</button><div class="tt">Ports &amp; Protocols</div></div>
+  <div class="tab-row">
+    <button class="tab on" onclick="portsTab('drill')">Drill</button>
+    <button class="tab" onclick="portsTab('ref')">Reference</button>
+    <button class="tab" onclick="portsTab('timed')">Timed Quiz</button>
+  </div>
+  <div class="scroll" style="padding:12px 16px;" id="ports-c"></div>
+</div>
+
+<!-- TROUBLESHOOT SCREEN -->
+<div id="s-trbl" class="scr">
+  <div class="tb"><button class="bk" onclick="goback()">←</button><div class="tt">Troubleshooting Lab</div></div>
+  <div class="scroll" style="padding:12px 16px;" id="trbl-c"></div>
+</div>
+
+<!-- STATS SCREEN -->
+<div id="s-stats" class="scr">
+  <div class="tb">
+    <div><div class="tt">Dashboard</div><div class="ts">Exam Readiness</div></div>
+    <button class="btn bg" style="padding:8px 12px;font-size:12px;margin-left:auto;" onclick="openConfirm('Reset all progress?','This cannot be undone.',doReset)">Reset</button>
+  </div>
+  <div class="scroll" style="padding:12px 16px;" id="stats-c"></div>
+</div>
+
+<!-- NOTES SCREEN -->
+<div id="s-notes" class="scr">
+  <div class="tb">
+    <div class="tt">My Notes</div>
+    <button class="btn bp" style="padding:8px 14px;font-size:12px;margin-left:auto;" onclick="openNote(null)">+ New</button>
+  </div>
+  <div style="padding:10px 16px 0;flex-shrink:0;">
+    <input type="text" id="note-srch" placeholder="Search notes..." oninput="renderNotes()"
+      autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+  </div>
+  <div class="scroll" style="padding:12px 16px;" id="notes-c"></div>
+</div>
+
+<!-- STUDY NAV -->
+<div id="s-studynav" class="scr">
+  <div class="tb"><button class="bk" onclick="goback()">←</button><div class="tt">Study Plan</div></div>
+  <div class="scroll" style="padding:12px 16px;" id="sn-c"></div>
+</div>
+
+<!-- PRACTICE NAV -->
+<div id="s-pracnav" class="scr">
+  <div class="tb"><button class="bk" onclick="goback()">←</button><div class="tt">Practice</div></div>
+  <div class="scroll" style="padding:12px 16px;" id="pn-c"></div>
+</div>
+
+<!-- LABS NAV -->
+<div id="s-labsnav" class="scr">
+  <div class="tb"><button class="bk" onclick="goback()">←</button><div class="tt">Labs</div></div>
+  <div class="scroll" style="padding:12px 16px;" id="ln-c"></div>
+</div>
+
+<!-- NAV BAR -->
+<div id="nav">
+  <button class="nb on" onclick="navTo('home')" id="n-home"><span class="ni">🏠</span><span>Home</span></button>
+  <button class="nb" onclick="navTo('study')" id="n-study"><span class="ni">📚</span><span>Study</span></button>
+  <button class="nb" onclick="navTo('practice')" id="n-practice"><span class="ni">📝</span><span>Practice</span></button>
+  <button class="nb" onclick="navTo('labs')" id="n-labs"><span class="ni">🧪</span><span>Labs</span></button>
+  <button class="nb" onclick="navTo('stats')" id="n-stats"><span class="ni">📊</span><span>Stats</span></button>
+</div>
+
+<div id="toast"></div>
+
+<!-- NOTE MODAL -->
+<div class="mbg" id="m-note">
+  <div class="modal">
+    <div class="mh"></div>
+    <div style="font-size:15px;font-weight:700;margin-bottom:14px;" id="nm-t">New Note</div>
+    <input type="text" id="ni-title" placeholder="Title..." style="margin-bottom:10px;"
+      autocomplete="off" autocorrect="off" autocapitalize="sentences" spellcheck="false">
+    <textarea id="ni-body" placeholder="Your notes..." autocorrect="off" spellcheck="false"></textarea>
+    <div style="margin:10px 0;">
+      <input type="text" id="ni-tags" placeholder="Tags (comma separated)..."
+        autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false">
+    </div>
+    <div class="br" style="margin-top:14px;">
+      <button class="btn bg bf" onclick="closeM('m-note')">Cancel</button>
+      <button class="btn bp bf" onclick="saveNote()">Save Note</button>
+    </div>
+  </div>
+</div>
+
+<!-- EXAM EXIT MODAL -->
+<div class="mbg" id="m-xexit">
+  <div class="modal">
+    <div class="mh"></div>
+    <div style="font-size:15px;font-weight:700;margin-bottom:8px;">Exit Exam?</div>
+    <div style="font-size:13px;color:var(--text2);margin-bottom:16px;">Your progress will be lost.</div>
+    <div class="br">
+      <button class="btn bg bf" onclick="closeM('m-xexit')">Keep Going</button>
+      <button class="btn bf" style="background:var(--r);border-color:var(--r);color:#000;" onclick="doExitExam()">Exit</button>
+    </div>
+  </div>
+</div>
+
+<!-- GENERIC CONFIRM MODAL -->
+<div class="mbg" id="m-confirm">
+  <div class="modal">
+    <div class="mh"></div>
+    <div style="font-size:15px;font-weight:700;margin-bottom:8px;" id="mc-title">Confirm</div>
+    <div style="font-size:13px;color:var(--text2);margin-bottom:16px;" id="mc-body"></div>
+    <div class="br">
+      <button class="btn bg bf" onclick="closeM('m-confirm')">Cancel</button>
+      <button class="btn bf" style="background:var(--r);border-color:var(--r);color:#000;" id="mc-ok">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<!-- EXAM DATE MODAL -->
+<div class="mbg" id="m-examdate">
+  <div class="modal">
+    <div class="mh"></div>
+    <div style="font-size:15px;font-weight:700;margin-bottom:8px;">Set Exam Date</div>
+    <div style="font-size:13px;color:var(--text2);margin-bottom:14px;">Add your target exam date to see a countdown on the home screen.</div>
+    <input type="date" id="ed-input" style="margin-bottom:14px;">
+    <div class="br">
+      <button class="btn bg bf" onclick="closeM('m-examdate')">Cancel</button>
+      <button class="btn bp bf" onclick="saveExamDate()">Save</button>
+    </div>
+  </div>
+</div>
+
+</div><!-- /#app -->
+<script>
+// ═══════════════════════════════════════════════════════════
+// DOMAIN DEFINITIONS
+// ═══════════════════════════════════════════════════════════
+const DOM=[
+  {id:'d1',c:'1.0',t:'Networking Concepts',w:23,col:'var(--d1)'},
+  {id:'d2',c:'2.0',t:'Network Implementation',w:19,col:'var(--d2)'},
+  {id:'d3',c:'3.0',t:'Network Operations',w:17,col:'var(--d3)'},
+  {id:'d4',c:'4.0',t:'Network Security',w:20,col:'var(--d4)'},
+  {id:'d5',c:'5.0',t:'Network Troubleshooting',w:21,col:'var(--d5)'},
+];
+
+// ═══════════════════════════════════════════════════════════
+// FLASHCARDS — expanded with all missing N10-009 objectives
+// ═══════════════════════════════════════════════════════════
+const FC={
+d1:[
+  {q:"OSI Layer 1 — Physical",a:"Transmits raw bits over media. Devices: hubs, repeaters, cables. No addressing. Cables, connectors, signals."},
+  {q:"OSI Layer 2 — Data Link",a:"MAC addressing, frames, error detection. Switches, bridges. Protocols: Ethernet (802.3), 802.11."},
+  {q:"OSI Layer 3 — Network",a:"IP addressing, routing, packets. Routers, Layer 3 switches. Protocols: IP, ICMP, OSPF, BGP."},
+  {q:"OSI Layer 4 — Transport",a:"TCP (reliable, connection-oriented) and UDP (fast, connectionless). Ports live here. Segments/datagrams."},
+  {q:"OSI Layer 5 — Session",a:"Establishes, maintains, terminates sessions. NetBIOS, RPC, SQL sessions."},
+  {q:"OSI Layer 6 — Presentation",a:"Encryption, compression, format translation. SSL/TLS negotiation. JPEG, ASCII, EBCDIC."},
+  {q:"OSI Layer 7 — Application",a:"User-facing: HTTP, HTTPS, FTP, SMTP, DNS, DHCP, SSH, Telnet, SNMP."},
+  {q:"OSI Mnemonic (1→7)",a:"\"Please Do Not Throw Sausage Pizza Away\" — Physical, Data Link, Network, Transport, Session, Presentation, Application."},
+  {q:"TCP Three-Way Handshake",a:"SYN → SYN-ACK → ACK. Client initiates, server responds, client confirms. Establishes reliable connection."},
+  {q:"TCP vs UDP",a:"TCP: reliable, ordered, slower, retransmits. UDP: fast, no guarantee, no retransmit. Use UDP for DNS/DHCP/VoIP/streaming."},
+  {q:"IPv4 Private Ranges",a:"10.0.0.0/8, 172.16–172.31.x.x/12, 192.168.0.0/16. Not routable on public internet. Used behind NAT."},
+  {q:"APIPA — 169.254.x.x",a:"Automatic Private IP Addressing. Self-assigned when DHCP fails. Cannot reach internet. Indicates DHCP problem."},
+  {q:"DHCP Process — DORA",a:"Discover (broadcast) → Offer (server) → Request (client) → Acknowledge (server). IP, mask, gateway, DNS assigned."},
+  {q:"DNS",a:"Domain Name System. Resolves hostnames to IPs. Port 53 UDP (queries) / TCP (zone transfers >512 bytes)."},
+  {q:"DNS Record Types",a:"A=IPv4, AAAA=IPv6, CNAME=alias, MX=mail, PTR=reverse lookup, TXT=SPF/DKIM, SOA=zone authority, NS=name server."},
+  {q:"ARP",a:"Address Resolution Protocol. Maps IP → MAC on local network. Broadcasts 'Who has IP X?' Works at Layer 2/3 boundary."},
+  {q:"NAT / PAT",a:"NAT: maps private IPs to public IP. PAT (Port Address Translation): many-to-one via port numbers. Conserves public IPs."},
+  {q:"Default Gateway",a:"Router IP used to send traffic off the local subnet. Without it, host can only communicate locally."},
+  {q:"Subnet /24",a:"255.255.255.0 — 256 addresses, 254 usable hosts. Most common small network mask."},
+  {q:"Subnet /25",a:"255.255.255.128 — 128 addresses, 126 usable. Splits /24 in half. Block size 128."},
+  {q:"Subnet /26",a:"255.255.255.192 — 64 addresses, 62 usable. Block size 64."},
+  {q:"Subnet /27",a:"255.255.255.224 — 32 addresses, 30 usable. Block size 32."},
+  {q:"Subnet /28",a:"255.255.255.240 — 16 addresses, 14 usable. Block size 16. Common in small segments."},
+  {q:"Subnet /29",a:"255.255.255.248 — 8 addresses, 6 usable. Block size 8."},
+  {q:"Subnet /30",a:"255.255.255.252 — 4 addresses, 2 usable. Point-to-point links. Exam favorite!"},
+  {q:"IPv6 Format",a:"128 bits. 8 groups of 4 hex. :: = consecutive zeros omitted. fe80::/10 = link-local. 2000::/3 = global unicast."},
+  {q:"IPv6 Link-Local",a:"fe80::/10 — auto-configured on every interface. Not routable beyond local segment. Used for neighbor discovery."},
+  {q:"IPv6 Loopback",a:"::1 — equivalent to IPv4 127.0.0.1. Tests local IPv6 stack."},
+  {q:"IPv6 NDP — Neighbor Discovery Protocol",a:"Replaces ARP in IPv6. Uses ICMPv6 messages: Router Solicitation (RS), Router Advertisement (RA), Neighbor Solicitation (NS), Neighbor Advertisement (NA)."},
+  {q:"IPv6 Dual-Stack",a:"Device runs both IPv4 and IPv6 simultaneously. Preferred transition method. No encapsulation overhead."},
+  {q:"IPv6 Tunneling (6to4 / Teredo)",a:"Encapsulates IPv6 inside IPv4 packets. 6to4 uses 2002::/16 prefix. Teredo tunnels through NAT. Used when ISP doesn't support IPv6."},
+  {q:"ICMP",a:"Internet Control Message Protocol. Layer 3. Used by ping (echo request/reply) and traceroute (TTL exceeded). Not for data transport."},
+  {q:"TTL — Time to Live",a:"Decremented at each router hop. At 0, packet discarded, ICMP Time Exceeded sent back. Prevents routing loops."},
+  {q:"Broadcast Domain",a:"All devices that receive a Layer 2 broadcast. Separated by routers. VLANs create separate broadcast domains."},
+  {q:"Collision Domain",a:"Segment where collisions occur. Each switch port = one collision domain. Hubs share one collision domain."},
+  {q:"Loopback IPv4",a:"127.0.0.1 — tests local TCP/IP stack without sending traffic on wire. 'localhost'."},
+  {q:"Network Topologies",a:"Bus: single cable, legacy. Ring: circular path. Star: all to central switch (most common). Mesh: every device connected. Hybrid: mixed."},
+  {q:"3-Tier Architecture",a:"Access (end devices) → Distribution (aggregation, ACLs, inter-VLAN routing) → Core (high-speed backbone). Enterprise standard."},
+  {q:"Spine-Leaf Architecture",a:"Every leaf connects to every spine. No spine-to-spine or leaf-to-leaf links. Predictable latency. Used in data centers."},
+  {q:"Cloud Service Models",a:"IaaS: you manage OS up (AWS EC2). PaaS: you manage app/data (Azure App Service). SaaS: vendor manages everything (Office 365, Gmail)."},
+  {q:"Cloud Deployment Models",a:"Public: shared infrastructure (AWS/Azure). Private: dedicated on-prem. Hybrid: mix of both. Multi-cloud: multiple public providers."},
+  {q:"Administrative Distance",a:"Trustworthiness of routing protocol. Connected=0, Static=1, EIGRP=90, OSPF=110, RIP=120. Lower = more preferred."},
+  {q:"Floating Static Route",a:"Static route with higher AD than dynamic protocol. Used as backup — only active if primary route fails. AD manually set high (e.g., 254)."},
+],
+d2:[
+  {q:"VLAN",a:"Virtual LAN. Logically segments Layer 2 without extra hardware. Reduces broadcast domains. Requires managed switch."},
+  {q:"802.1Q Trunking",a:"VLAN tagging standard. Adds 4-byte tag to Ethernet frames. Carries multiple VLANs over one trunk link between switches."},
+  {q:"Trunk vs Access Port",a:"Trunk: carries multiple VLANs (802.1Q tagged), switch-to-switch. Access: single VLAN, untagged, connects end devices."},
+  {q:"STP — Spanning Tree Protocol",a:"Prevents Layer 2 loops. Elects Root Bridge (lowest Bridge ID). Blocks redundant paths. 802.1D = classic, 802.1w RSTP = faster."},
+  {q:"RSTP — Rapid STP",a:"802.1w. Converges in ~1-2 seconds vs 30-50 for 802.1D. Adds DiscardIng/Learning/Forwarding states. Backward compatible."},
+  {q:"PortFast",a:"STP feature that immediately moves access port to Forwarding state, bypassing Listening/Learning. For end-device ports only. Do NOT use on switch ports."},
+  {q:"BPDU Guard",a:"Disables a PortFast-enabled port if it receives a BPDU (Bridge Protocol Data Unit). Prevents unauthorized switches. Works with PortFast."},
+  {q:"Port Security",a:"Limits MAC addresses allowed on a switch port. Modes: Protect (drop silently), Restrict (drop + log), Shutdown (err-disable). Sticky MAC = learn dynamically."},
+  {q:"DHCP Snooping",a:"Switch feature that validates DHCP messages. Blocks rogue DHCP servers on untrusted ports. Builds binding table (IP, MAC, port, VLAN) for DAI."},
+  {q:"Dynamic ARP Inspection (DAI)",a:"Uses DHCP snooping table to validate ARP packets. Drops ARP replies that don't match the binding table. Prevents ARP poisoning."},
+  {q:"OSPF",a:"Open Shortest Path First. Link-state IGP. Dijkstra algorithm. Fast convergence. No hop limit. Metric = cost (ref bandwidth / interface bandwidth)."},
+  {q:"BGP",a:"Border Gateway Protocol. Path-vector EGP. Routes between autonomous systems. The internet's routing protocol. TCP port 179."},
+  {q:"EIGRP",a:"Enhanced IGRP. Cisco hybrid protocol. Fast convergence. DUAL algorithm. Metric = bandwidth + delay. Interior gateway protocol."},
+  {q:"RIP",a:"Routing Information Protocol. Distance-vector. Max 15 hops (16 = unreachable). Slow convergence. Legacy. Metric = hop count."},
+  {q:"Default Route",a:"0.0.0.0/0 — matches all traffic with no specific route. Last resort gateway. Longest prefix match always wins."},
+  {q:"Cat5e Cable",a:"Up to 1 Gbps at 100m. Minimum for gigabit ethernet. 4 pairs, 24 AWG. Most common legacy install."},
+  {q:"Cat6 Cable",a:"1 Gbps at 100m, 10 Gbps at 55m. Internal separator, tighter twist. More crosstalk rejection than Cat5e."},
+  {q:"Cat6a Cable",a:"10 Gbps at full 100m. 'Augmented'. Required for true 10GBase-T. More shielding, thicker than Cat6. Exam: Cat6a=10G@100m."},
+  {q:"Single-Mode Fiber (SMF)",a:"9-micron core. Long distances (km). Laser light. Yellow jacket. WAN / building-to-building connections. More expensive than MMF."},
+  {q:"Multi-Mode Fiber (MMF)",a:"50/62.5-micron core. Short distances (<550m). LED/VCSEL. Orange (OM1/2) or aqua (OM3/4) jacket. Data center use."},
+  {q:"Fiber Connectors",a:"LC: small form factor, latching, common in data centers. SC: push-pull, square. ST: bayonet, legacy. MPO/MTP: multi-fiber, 12/24 strands."},
+  {q:"SFP / QSFP Transceivers",a:"SFP: 1G hot-swap transceiver. SFP+: 10G. QSFP: 40G (4x10G). QSFP28: 100G. Inserted into switch/router cage. Media-specific."},
+  {q:"PoE Standards",a:"802.3af = 15.4W. 802.3at (PoE+) = 30W. 802.3bt (PoE++) = 60-100W. Powers APs, cameras, VoIP phones."},
+  {q:"802.11ac — Wi-Fi 5",a:"5GHz only. Up to 3.5 Gbps. MU-MIMO. Beamforming. Most common enterprise standard."},
+  {q:"802.11ax — Wi-Fi 6",a:"2.4/5/6GHz. Up to 9.6 Gbps. OFDMA (multiple clients simultaneously). BSS Coloring reduces interference."},
+  {q:"2.4GHz Channels",a:"Only channels 1, 6, 11 are non-overlapping in 2.4GHz (US). Using adjacent channels creates co-channel interference."},
+  {q:"LACP / Port Aggregation",a:"802.3ad. Combines multiple physical links into one logical link. More bandwidth + redundancy."},
+  {q:"SD-WAN",a:"Software-Defined WAN. Centrally manages multiple WAN links (MPLS, broadband, LTE) via software controller. Policy-based routing."},
+  {q:"MPLS",a:"Multiprotocol Label Switching. Labels packets for faster forwarding. Carrier WAN technology. QoS friendly. Predictable paths."},
+  {q:"DSL",a:"Digital Subscriber Line. Over phone copper. ADSL: asymmetric (faster download). VDSL: higher speeds, shorter distance. Shared with phone."},
+  {q:"Wireless Security: WEP",a:"Wired Equivalent Privacy. Broken/deprecated. RC4 cipher. Never use. Vulnerable to passive attacks within minutes."},
+  {q:"Wireless Security: WPA2",a:"AES-CCMP encryption. PSK (personal) or 802.1X enterprise. Vulnerable to KRACK. Still widely deployed."},
+  {q:"Wireless Security: WPA3",a:"SAE (Dragonfly) replaces PSK. Prevents offline dictionary attacks. Forward secrecy. OWE for open networks. Current standard."},
+  {q:"Rollover / Console Cable",a:"RJ45 to DB9/USB. Pin 1↔8, 2↔7, 3↔6 etc (reversed). Used for out-of-band management of routers/switches. Null modem equivalent."},
+  {q:"Crossover Cable",a:"Connects like devices (switch-to-switch, PC-to-PC). T568A on one end, T568B on other. Modern switches auto-detect (MDIX) — rarely needed."},
+],
+d3:[
+  {q:"SNMP",a:"Simple Network Management Protocol. Agent on device, Manager collects. Ports 161 (queries) / 162 (traps). v3 = encrypted + authenticated."},
+  {q:"SNMP Trap",a:"Unsolicited alert sent from agent to manager without polling. Port 162 UDP. Triggered by events: interface down, high CPU, etc."},
+  {q:"Syslog",a:"Centralizes device logs. Severity 0-7. Port 514 UDP. Lower number = more critical. Relies on NTP for accurate timestamps."},
+  {q:"Syslog Severity Mnemonic",a:"\"Every Awesome Cisco Engineer Will Need Ice Daily\" — 0=Emergency, 1=Alert, 2=Critical, 3=Error, 4=Warning, 5=Notice, 6=Info, 7=Debug."},
+  {q:"NetFlow / sFlow / IPFIX",a:"NetFlow: Cisco, exports flow records (5-tuple). sFlow: samples packets, any vendor. IPFIX: IETF NetFlow v9 standard. Used for bandwidth analysis."},
+  {q:"RTO",a:"Recovery Time Objective. Maximum acceptable downtime after a failure. Drives recovery infrastructure design."},
+  {q:"RPO",a:"Recovery Point Objective. Maximum acceptable data loss measured in time. Drives backup frequency. RPO=1hr means backup hourly."},
+  {q:"MTTR",a:"Mean Time To Repair. Average time to restore a failed component. Lower is better. Key SLA metric."},
+  {q:"MTBF",a:"Mean Time Between Failures. Average operating time between failures. Higher = more reliable. Used to predict failure frequency."},
+  {q:"Five Nines",a:"99.999% uptime = ~5.26 minutes downtime per year. High availability benchmark. Four nines = ~52 min/year."},
+  {q:"FHRP — First Hop Redundancy Protocol",a:"Provides default gateway redundancy. Types: HSRP (Cisco), VRRP (open standard), GLBP (Cisco, load-balances). Presents virtual IP to hosts."},
+  {q:"HSRP",a:"Hot Standby Router Protocol. Cisco proprietary. Active router forwards traffic. Standby takes over if active fails. Virtual IP shared."},
+  {q:"VRRP",a:"Virtual Router Redundancy Protocol. Open standard (RFC 5798). Master router owns virtual IP. Preemption configurable. Similar to HSRP."},
+  {q:"Load Balancer",a:"Distributes traffic across multiple servers. Algorithms: round-robin, least connections, IP hash. Provides HA + performance."},
+  {q:"Site-to-Site VPN",a:"Permanent encrypted tunnel between two networks. IPSec. Used to connect branch offices to HQ. Transparent to users."},
+  {q:"Remote Access VPN",a:"Individual user to corporate network. SSL VPN (browser-based) or IPSec client. Supports split tunneling."},
+  {q:"Split Tunneling",a:"VPN sends only corporate traffic through tunnel. Internet goes direct. Reduces VPN load but exposes local internet traffic."},
+  {q:"SSH",a:"Secure Shell. Port 22. Encrypted remote CLI. Replaced Telnet. Uses asymmetric keys for authentication."},
+  {q:"Telnet",a:"Port 23. Unencrypted. Legacy remote CLI. Sends credentials in cleartext. Never use in production."},
+  {q:"RDP",a:"Remote Desktop Protocol. Port 3389. GUI remote access to Windows. Enable NLA (Network Level Authentication). Use behind VPN."},
+  {q:"Change Management",a:"Request → Review → Approve → Implement → Verify → Document. CAB approves changes. Prevents unplanned outages."},
+  {q:"Network Baseline",a:"Documented snapshot of normal network performance (utilization, latency, error rates). Used to detect anomalies and measure change impact."},
+  {q:"IPAM",a:"IP Address Management. Tracks IP allocations, prevents conflicts, manages DNS/DHCP. Tools: SolarWinds IP Manager, Infoblox."},
+  {q:"NTP",a:"Network Time Protocol. UDP port 123. Synchronizes device clocks. Critical for log correlation and Kerberos auth (5-min tolerance)."},
+  {q:"NTP Stratum",a:"Hierarchy level. Stratum 0: atomic clock. Stratum 1: directly connected to stratum 0. Stratum 2: syncs to stratum 1. Max usable: 15."},
+  {q:"DNS Relay Agent",a:"DHCP Relay Agent (ip helper-address). Forwards DHCP broadcasts as unicast across subnets to a DHCP server on a different network."},
+  {q:"DHCP Scope",a:"Range of IP addresses a DHCP server can assign for a subnet. Includes: IP range, subnet mask, default gateway, DNS, lease time, exclusions."},
+  {q:"Port Mirroring / SPAN",a:"SPAN (Switched Port Analyzer). Copies traffic from source port(s) to destination port for packet analysis. No impact on original traffic."},
+  {q:"Network Diagrams",a:"Logical: shows IP addressing, VLANs, routing. Physical: shows cables, ports, rack layout. Both required for documentation best practices."},
+  {q:"SLA",a:"Service Level Agreement. Contractual uptime/performance commitments. Typically defines RTO, RPO, and penalties for violations."},
+],
+d4:[
+  {q:"CIA Triad",a:"Confidentiality (authorized access only), Integrity (data not altered), Availability (accessible when needed). Foundation of information security."},
+  {q:"AAA",a:"Authentication (who are you?), Authorization (what can you do?), Accounting (what did you do?). Implemented via RADIUS or TACACS+."},
+  {q:"RADIUS",a:"UDP ports 1812 (auth) / 1813 (acct). Combines auth+authz. Industry standard. Encrypts only password field in packet."},
+  {q:"TACACS+",a:"TCP port 49. Cisco proprietary. Separates AAA into separate packets. Encrypts ENTIRE packet. Better auditing than RADIUS."},
+  {q:"DoS vs DDoS",a:"DoS: single attacker floods target. DDoS: botnet of many hosts flood simultaneously. Amplification attacks use spoofed source IPs."},
+  {q:"Man-in-the-Middle (MitM)",a:"Intercepts communication between two parties. Methods: ARP poisoning, rogue AP, SSL stripping. Mitigate: encryption, certificate pinning."},
+  {q:"Phishing",a:"Deceptive email to steal credentials or install malware. Spear phishing = targeted. Whaling = executives. Vishing = voice. Smishing = SMS."},
+  {q:"VLAN Hopping",a:"Attack bypasses VLAN isolation. Methods: Switch Spoofing (negotiate trunk) or Double Tagging (native VLAN exploit). Mitigate: disable auto-trunking, change native VLAN."},
+  {q:"DNS Poisoning / Spoofing",a:"Corrupts DNS cache with malicious IP mappings. Redirects users to fake sites. Mitigate: DNSSEC, DNS over HTTPS (DoH), trusted resolvers."},
+  {q:"Rogue AP / Evil Twin",a:"Unauthorized AP mimics legitimate network. Users connect unknowingly. Evil Twin: same SSID as legitimate AP. Mitigate: wireless IDS, 802.1X."},
+  {q:"SQL Injection",a:"Inserts SQL code into input fields to query/modify DB. Mitigate: parameterized queries, input validation, WAF."},
+  {q:"IDS vs IPS",a:"IDS: passive, out-of-band, detects and ALERTS only. No traffic impact if it fails. IPS: inline, active, detects and BLOCKS. Failure can affect traffic."},
+  {q:"Firewall Types",a:"Packet filter: basic IP/port, stateless. Stateful: tracks connections, allows return traffic. NGFW: deep packet inspection, app-aware, user-aware."},
+  {q:"ACL",a:"Access Control List. Permit/deny rules. Evaluated top-to-bottom. Implicit deny all at end. Applied inbound OR outbound on interface."},
+  {q:"802.1X",a:"Port-based Network Access Control. Supplicant (client) → Authenticator (switch) → Auth Server (RADIUS). EAP carries auth credentials."},
+  {q:"EAP Types",a:"PEAP: wraps EAP in TLS tunnel, server cert only. EAP-TLS: mutual certs (most secure). EAP-TTLS: like PEAP, supports more inner methods."},
+  {q:"Zero Trust",a:"Never trust, always verify. No implicit trust even inside the network. Microsegmentation. Authenticate + authorize every request."},
+  {q:"DMZ",a:"Demilitarized Zone. Network segment between internet and internal network. Hosts public-facing servers. Dual-firewall architecture."},
+  {q:"PKI",a:"Public Key Infrastructure. CA issues digital certificates binding public keys to identities. Used for HTTPS, VPN, email signing."},
+  {q:"TLS / Certificate",a:"TLS uses asymmetric crypto for key exchange, symmetric (AES) for data. Certificate contains: public key, subject, issuer, expiry, digital signature."},
+  {q:"AES",a:"Advanced Encryption Standard. Symmetric block cipher. 128/192/256-bit keys. Replaced DES/3DES. Used in WPA2/WPA3, TLS, IPSec."},
+  {q:"RSA",a:"Asymmetric encryption. Uses public/private key pair. Used for key exchange, digital signatures. Typical sizes: 2048/4096-bit."},
+  {q:"IPSec",a:"Secures IP traffic. AH: authentication + integrity, no encryption. ESP: encryption + integrity. IKE: key exchange. Modes: Tunnel (whole packet) / Transport (payload only)."},
+  {q:"Defense in Depth",a:"Multiple security layers so no single failure exposes everything. Combines: firewall, IPS, encryption, MFA, physical security, training."},
+  {q:"ARP Poisoning",a:"Sends fake ARP replies to corrupt ARP caches. Associates attacker MAC with gateway IP. Enables MitM. Mitigate: DAI, static ARP, encryption."},
+  {q:"Social Engineering",a:"Manipulating people rather than systems. Pretexting, baiting, tailgating, shoulder surfing, dumpster diving. Counter: security awareness training."},
+  {q:"Honeypot",a:"Deliberate decoy system to attract attackers. Records methods and provides threat intelligence. No production data. Early warning system."},
+  {q:"Physical Security",a:"Mantrap: double-door entry requires badge. Badge/smart card: proximity or chip. Cameras: CCTV monitoring. Cable locks: secure laptops. Clean desk policy."},
+  {q:"Least Privilege",a:"Users/processes get only the minimum access needed for their job. Limits blast radius of compromised accounts. Principle of need-to-know."},
+  {q:"Network Hardening",a:"Disable unused ports/services, change defaults, enable logging, patch regularly, use encrypted management (SSH not Telnet), segment with VLANs/ACLs."},
+],
+d5:[
+  {q:"CompTIA 6-Step Methodology",a:"1) Identify problem  2) Establish theory  3) Test theory  4) Create action plan  5) Implement & verify  6) Document findings."},
+  {q:"ping",a:"Sends ICMP echo requests. Tests basic reachability. Measures RTT. If external IP pings but hostname fails = DNS issue."},
+  {q:"traceroute / tracert",a:"Shows hop-by-hop path using TTL. Timeouts at a hop = ICMP blocked or routing issue. Not necessarily down."},
+  {q:"nslookup / dig",a:"DNS query tools. nslookup = Windows/Linux basic. dig = Linux detailed output. Test specific record types (A, MX, CNAME)."},
+  {q:"ipconfig / ifconfig",a:"ipconfig /all = Windows full IP config. ifconfig = Linux/Mac (deprecated, use 'ip a'). Shows IP, mask, gateway, DNS, MAC, DHCP lease info."},
+  {q:"ipconfig /flushdns",a:"Clears local DNS resolver cache. Fixes stale/corrupted entries causing name resolution failures for one user."},
+  {q:"netstat",a:"Shows active connections, listening ports. netstat -an = all connections numeric. netstat -r = routing table. ss = modern Linux equivalent."},
+  {q:"arp -a",a:"Displays local ARP cache. IP→MAC mappings. Used to diagnose Layer 2 issues and detect ARP poisoning (duplicate MACs)."},
+  {q:"nmap",a:"Network scanner. Discovers hosts, open ports, services, OS versions. nmap -sV for service versions. nmap -O for OS detection. Legal use only."},
+  {q:"Wireshark",a:"Packet capture and analysis. Captures frames off the wire. Filter syntax: ip.addr==10.0.0.1, tcp.port==443, dns. Reads .pcap files."},
+  {q:"Duplex Mismatch",a:"One side full-duplex, other half-duplex. Causes LATE COLLISIONS, CRC errors, poor throughput. Check switch + NIC settings. Use auto/auto."},
+  {q:"VLAN Mismatch",a:"Devices on different VLANs can't communicate at Layer 2. Need router/L3 switch for inter-VLAN routing. Verify port VLAN assignments."},
+  {q:"Routing Loop",a:"Packets cycle endlessly between routers. TTL expires. Detected via traceroute (repeating hops). Fix: route poisoning, split horizon."},
+  {q:"Wireless Interference",a:"2.4GHz: use channels 1, 6, 11. Interferers: microwaves, Bluetooth, neighboring APs. Strong signal + low throughput = co-channel interference."},
+  {q:"Cable Testing Tools",a:"Cable tester: continuity/pinout. TDR (Time Domain Reflectometer): finds break distance. Toner probe: traces cables. OTDR: fiber testing/break location."},
+  {q:"High Latency Causes",a:"Congestion, long routes, faulty cables, overloaded devices, wireless interference. Diagnose: ping + traceroute + interface counters."},
+  {q:"Packet Loss Causes",a:"Faulty cables, buffer overflow, wireless interference, bad QoS, hardware failure. Check ping -t continuously + interface error counters."},
+  {q:"OSI Troubleshooting Approach",a:"Bottom-up: physical first (Layer 1→7). Top-down: app first (Layer 7→1). Divide and conquer: test Layer 3, work up or down. Most efficient = divide and conquer."},
+  {q:"MTU Mismatch",a:"Maximum Transmission Unit mismatch causes packet fragmentation or drops. Default Ethernet MTU=1500. Jumbo frames=9000. Check with ping -f (DF bit)."},
+  {q:"Asymmetric Routing",a:"Traffic takes different paths inbound vs outbound. Can cause stateful firewall to drop 'new' return traffic. Check routing tables on both paths."},
+  {q:"Duplicate IP Address",a:"Two devices with same IP: one or both lose connectivity. Windows shows popup. Fix: check DHCP exclusions, static IPs, and DHCP snooping."},
+  {q:"DHCP Exhaustion / Starvation",a:"Attacker sends many fake DHCP Discovers exhausting the scope. Legitimate clients get APIPA. Fix: DHCP snooping, rate-limit DHCP on switch ports."},
+],
+};
+// ═══════════════════════════════════════════════════════════
+// PORTS DATA
+// ═══════════════════════════════════════════════════════════
+const PORTS=[
+  {p:20,n:"FTP Data",d:"File Transfer — data channel",s:false,r:"22"},
+  {p:21,n:"FTP Control",d:"File Transfer — control channel",s:false,r:"22"},
+  {p:22,n:"SSH/SFTP/SCP",d:"Secure Shell, Secure FTP, Secure Copy",s:true,r:"23"},
+  {p:23,n:"Telnet",d:"Unencrypted remote terminal",s:false,r:"22"},
+  {p:25,n:"SMTP",d:"Simple Mail Transfer Protocol",s:false,r:"587/465"},
+  {p:49,n:"TACACS+",d:"Terminal Access Controller — TCP — full packet encryption",s:true,r:""},
+  {p:53,n:"DNS",d:"Domain Name System — UDP queries, TCP zone transfers",s:false,r:"853"},
+  {p:67,n:"DHCP Server",d:"DHCP server listens — UDP broadcast",s:false,r:"68"},
+  {p:68,n:"DHCP Client",d:"DHCP client — UDP",s:false,r:"67"},
+  {p:69,n:"TFTP",d:"Trivial FTP — no auth, UDP only — used for switch/router image transfers",s:false,r:"21"},
+  {p:80,n:"HTTP",d:"Hypertext Transfer Protocol — cleartext",s:false,r:"443"},
+  {p:110,n:"POP3",d:"Post Office Protocol v3 — email retrieval",s:false,r:"995"},
+  {p:119,n:"NNTP",d:"Network News Transfer Protocol",s:false,r:"563"},
+  {p:123,n:"NTP",d:"Network Time Protocol — UDP — clock synchronization",s:false,r:""},
+  {p:137,n:"NetBIOS NS",d:"NetBIOS Name Service",s:false,r:""},
+  {p:139,n:"NetBIOS Session",d:"NetBIOS Session Service / SMB legacy",s:false,r:"445"},
+  {p:143,n:"IMAP",d:"Internet Message Access Protocol — email sync",s:false,r:"993"},
+  {p:161,n:"SNMP",d:"SNMP polling queries — UDP",s:false,r:"162"},
+  {p:162,n:"SNMP Trap",d:"SNMP unsolicited alerts — UDP",s:false,r:"161"},
+  {p:179,n:"BGP",d:"Border Gateway Protocol — TCP — internet routing",s:true,r:""},
+  {p:389,n:"LDAP",d:"Lightweight Directory Access Protocol",s:false,r:"636"},
+  {p:443,n:"HTTPS",d:"HTTP over TLS/SSL — encrypted web",s:true,r:"80"},
+  {p:445,n:"SMB",d:"Server Message Block — Windows file/printer sharing",s:false,r:"139"},
+  {p:465,n:"SMTPS",d:"SMTP over TLS — email submission secure",s:true,r:"25"},
+  {p:514,n:"Syslog",d:"System log messages — UDP — use TLS 6514 for secure",s:false,r:"6514"},
+  {p:587,n:"SMTP Submission",d:"SMTP submission with STARTTLS — preferred over 465",s:true,r:"25"},
+  {p:636,n:"LDAPS",d:"LDAP over TLS — secure directory queries",s:true,r:"389"},
+  {p:993,n:"IMAPS",d:"IMAP over TLS — secure email sync",s:true,r:"143"},
+  {p:995,n:"POP3S",d:"POP3 over TLS — secure email retrieval",s:true,r:"110"},
+  {p:1433,n:"MSSQL",d:"Microsoft SQL Server",s:false,r:""},
+  {p:1701,n:"L2TP",d:"Layer 2 Tunneling Protocol — VPN",s:false,r:""},
+  {p:1723,n:"PPTP",d:"Point-to-Point Tunneling Protocol — legacy VPN — avoid",s:false,r:""},
+  {p:1812,n:"RADIUS Auth",d:"RADIUS Authentication — UDP — password only encrypted",s:false,r:"1813"},
+  {p:1813,n:"RADIUS Acct",d:"RADIUS Accounting — UDP",s:false,r:"1812"},
+  {p:3306,n:"MySQL",d:"MySQL Database",s:false,r:""},
+  {p:3389,n:"RDP",d:"Remote Desktop Protocol — use NLA + VPN",s:false,r:""},
+  {p:5060,n:"SIP",d:"Session Initiation Protocol — VoIP signaling",s:false,r:"5061"},
+  {p:5061,n:"SIPS",d:"SIP over TLS — secure VoIP signaling",s:true,r:"5060"},
+  {p:8080,n:"HTTP Alt",d:"Alternate HTTP / web proxy",s:false,r:"80"},
+  {p:8443,n:"HTTPS Alt",d:"Alternate HTTPS",s:true,r:"443"},
+];
+
+// ═══════════════════════════════════════════════════════════
+// TROUBLESHOOTING SCENARIOS — expanded to 12
+// ═══════════════════════════════════════════════════════════
+const TRBL=[
+{title:"169.254 — No Internet",diff:"Easy",
+scenario:"Ticket: \"I'm connected to the network but can't do anything.\" You run ipconfig: IP=169.254.44.7, Subnet=255.255.0.0, Gateway=(blank), DNS=(blank).",
+syms:["169.254.x.x IP address","No default gateway","No DNS servers","Network connected but non-functional"],
+opts:["Replace the NIC — hardware failure indicated","Release and renew IP; check DHCP server connectivity","Manually configure a static IP immediately","Reinstall network drivers"],
+ans:1,
+root:"DHCP failure. The workstation self-assigned an APIPA address (169.254.x.x) because no DHCP server responded. No lease = no gateway = no DNS = no connectivity.",
+fix:"1) Check physical cable/Wi-Fi. 2) ipconfig /release → ipconfig /renew. 3) Check DHCP server status. 4) Verify switch port VLAN matches DHCP scope. 5) Check firewall not blocking ports 67/68 UDP."},
+
+{title:"Pings IP, Not Name",diff:"Easy",
+scenario:"User: \"I can't get to any websites but my coworker next to me can.\" Testing: ping 8.8.8.8 = SUCCESS. ping google.com = \"Request could not find host google.com.\"",
+syms:["External IPs reachable","Domain names fail to resolve","Affects only this one user","Internet otherwise works"],
+opts:["Replace the gateway router","Run ipconfig /flushdns and verify DNS server assignment","Check the WAN connection at the ISP","Restart the DHCP server"],
+ans:1,
+root:"Local DNS issue. IP connectivity works (ping to 8.8.8.8). DNS lookup fails. Only one user affected (DNS server is up for others). Likely: corrupted DNS cache or wrong DNS server on this workstation.",
+fix:"1) ipconfig /flushdns. 2) ipconfig /all — verify correct DNS server IP. 3) If wrong DNS, check DHCP scope options. 4) Check hosts file at C:\\Windows\\System32\\drivers\\etc\\hosts."},
+
+{title:"No Internet, Local Works",diff:"Easy",
+scenario:"User: \"I can ping my printer and file server but can't reach the internet.\" Testing: ping 10.0.1.50 = OK. ping 8.8.8.8 = FAIL. ping google.com = FAIL.",
+syms:["Local subnet communication works","Cannot reach external IPs","Cannot reach external names","Affects only this workstation"],
+opts:["DNS misconfiguration — update DNS servers","Default gateway missing or wrong — verify gateway config","Replace network cable","ISP is down — wait"],
+ans:1,
+root:"Default gateway problem. Local works (same subnet, no gateway needed). External requires gateway to route off-subnet. Pinging external IP also fails so DNS is not the issue.",
+fix:"1) ipconfig /all — verify gateway present and correct. 2) ping the gateway — if fails, check if router is up. 3) If static IP, correct the gateway manually."},
+
+{title:"Duplex Mismatch",diff:"Medium",
+scenario:"After NIC replacement, file transfers are 5 Mbps on a gigabit link. Switch show interface g0/5: Duplex: half, Speed: 1000. Late-collisions: 3,812. Input errors: 1,247.",
+syms:["Low throughput on gigabit link","High LATE collision count","Half-duplex on switch port","Recent NIC replacement"],
+opts:["Replace the cable — causing signal errors","Set both switch port and NIC to full-duplex or both to auto","Change VLAN assignment on the switch port","Upgrade switch firmware"],
+ans:1,
+root:"Duplex mismatch. New NIC defaulted to full-duplex, switch auto-negotiated to half. Late collisions are definitive — they occur after 64-byte threshold, impossible in true full-duplex.",
+fix:"Set both to auto/auto OR manually set both to full/1000. NEVER mix manual one side + auto other — this always causes mismatch."},
+
+{title:"Wireless Paradox",diff:"Medium",
+scenario:"Conference room complaint: \"Wi-Fi shows 4 bars but Teams calls keep dropping and downloads are 1-2 Mbps.\" Wi-Fi analyzer shows 11 APs — 8 of them on channel 6.",
+syms:["Excellent signal (4 bars)","Very poor throughput","VoIP/video quality issues","Many APs on same channel"],
+opts:["Replace the user's wireless adapter","Distribute APs across channels 1, 6, and 11","Increase AP transmit power to override competing APs","Upgrade to WPA3"],
+ans:1,
+root:"Co-channel interference. 8 APs on channel 6 = massive contention. In 802.11 only one device transmits per channel at a time. Strong signal does NOT mean good performance.",
+fix:"Assign APs to channels 1, 6, 11 (non-overlapping). Consider 5GHz — more non-overlapping channels. Reduce AP power to limit overlap zones."},
+
+{title:"VLAN Island",diff:"Medium",
+scenario:"New VLAN 30 for contractors. They get 10.30.0.x IPs from DHCP and can reach each other, but cannot reach VLAN 10 (10.10.0.x) servers or the internet.",
+syms:["VLAN 30 hosts get correct IPs","Can communicate within VLAN 30","Cannot reach other VLANs","Cannot reach internet"],
+opts:["Change VLAN 30 hosts to static IPs in the 10.10.x.x range","Configure inter-VLAN routing (SVI) for VLAN 30 on the L3 switch","Disable STP on VLAN 30 ports","Add VLAN 30 to DHCP exclusion range"],
+ans:1,
+root:"Inter-VLAN routing not configured. VLANs are separate Layer 2 domains. Traffic between VLANs must be routed at Layer 3. VLAN 30 has no SVI on the core switch.",
+fix:"1) Create SVI: interface VLAN 30 → ip address 10.30.0.1 255.255.255.0 → no shutdown. 2) Ensure ip routing is enabled. 3) Set default gateway on VLAN 30 hosts to 10.30.0.1."},
+
+{title:"Firewall Change Broke HTTPS",diff:"Hard",
+scenario:"After firewall policy update at 14:00: HTTP sites load fine, HTTPS shows 'Connection Refused', VPN connections fail. Internal apps work. Started when change was pushed.",
+syms:["HTTP (port 80) works","HTTPS (port 443) fails — Connection Refused","VPN ports fail","Started immediately after firewall change"],
+opts:["SSL certificates on all servers expired","Review and restore firewall rules — port 443 and VPN ports accidentally blocked","DNS now resolving HTTPS differently","ISP is throttling encrypted traffic"],
+ans:1,
+root:"Firewall misconfiguration. Port 443 and VPN ports were accidentally removed from the outbound permit policy. Timing is the definitive clue — started exactly when change was applied.",
+fix:"1) ROLLBACK immediately if possible. 2) Compare current rules to pre-change baseline. 3) Restore PERMIT TCP 443 and VPN ports (UDP 500/4500, TCP 1723/1194). 4) Test, document, update change record."},
+
+{title:"Broadcast Storm",diff:"Hard",
+scenario:"Network becomes unusable suddenly. Core switch shows broadcast counters incrementing millions/sec. Multiple users lose connectivity. STP topology change notifications repeat rapidly. Started 5 min after new switch added.",
+syms:["Catastrophic broadcast storm","STP topology change notifications looping","Complete network disruption","New switch recently added"],
+opts:["Reboot all switches simultaneously","Disconnect the new switch; enable BPDU Guard on access ports","Replace all network cables","Upgrade STP to RSTP on all switches"],
+ans:1,
+root:"Layer 2 switching loop. The new unmanaged switch or miswired cable created a loop. STP didn't converge in time, or the new switch doesn't support STP.",
+fix:"1) Immediately disconnect new switch to stop the storm. 2) Enable PortFast + BPDU Guard on all access ports. 3) BPDU Guard shuts down any port receiving a BPDU. 4) Use managed switches only."},
+
+{title:"DNS Poisoning Suspected",diff:"Hard",
+scenario:"Security team reports multiple users being redirected to fake login pages when visiting the company's internal portal (portal.corp.local). The page looks identical but the certificate is wrong. Some users report it, others don't.",
+syms:["Legitimate DNS name redirecting to wrong IP","Fake certificate warning on affected machines","Only affects some users","Internal DNS name involved"],
+opts:["Restart DNS server — cache is corrupted","Investigate for ARP poisoning or rogue DHCP providing fake DNS server; check DNS cache on affected machines","Replace all SSL certificates","Block the portal temporarily"],
+ans:1,
+root:"DNS poisoning or rogue DHCP attack. Attacker is either poisoning the DNS cache on affected machines or a rogue DHCP server is assigning a malicious DNS server IP. Certificate mismatch confirms the redirect is going to an attacker-controlled server.",
+fix:"1) Run ipconfig /all on affected machines — check DNS server IPs. 2) Run nslookup portal.corp.local — check what IP resolves. 3) Check for rogue DHCP (DHCP snooping logs). 4) Flush DNS caches. 5) Implement DNSSEC. 6) Enable DHCP snooping."},
+
+{title:"Port Security Lockout",diff:"Medium",
+scenario:"A user in accounting moves their laptop to a new desk and plugs into a different wall port. Their network connection shows 'connected' but no traffic passes. You check the switch: port Gi0/14 shows 'err-disabled'.",
+syms:["Port shows err-disabled on switch","User moved to different desk/port","Physical connection shows connected","No network traffic passes"],
+opts:["Replace the network cable","The port is err-disabled due to port security violation — clear the err-disable state and update the sticky MAC or policy","Change the user's VLAN assignment","Reboot the switch"],
+ans:1,
+root:"Port security violation. The port was configured with sticky MAC learning — it had learned the previous device's MAC. When a new device (different MAC) connected, it triggered a security violation and shut the port down (err-disable).",
+fix:"1) interface Gi0/14 → shutdown → no shutdown to reset. 2) clear port-security sticky interface Gi0/14. 3) Consider using 802.1X instead of sticky MAC for dynamic authentication."},
+
+{title:"Routing Loop",diff:"Hard",
+scenario:"Network team adds a new summary route. Shortly after, users report intermittent packet loss. Traceroute to 10.5.0.0/16 shows: hop 3 → hop 4 → hop 3 → hop 4 → ... until TTL expires.",
+syms:["Traceroute shows same hops repeating","Intermittent packet loss for specific subnet","Started after routing change","TTL expiry errors in ping"],
+opts:["Replace the cable between hop 3 and hop 4","Remove the misconfigured summary route causing the loop — check for overlapping or missing more-specific routes","Increase the TTL value on packets","Reboot all routers"],
+ans:1,
+root:"Routing loop. The new summary route created a condition where Router 3 forwards to Router 4, and Router 4 forwards back to Router 3, with no more-specific route resolving the destination. Traceroute oscillating between same hops is definitive.",
+fix:"1) Remove the new summary route. 2) Verify routing table on both routers — check for missing specific routes. 3) Add a null0 (discard) route for the summary to prevent the loop. 4) Use route poisoning and split horizon."},
+
+{title:"DHCP Starvation Attack",diff:"Hard",
+scenario:"Help desk is flooded with calls — entire building (80 users) suddenly can't get network access. ipconfig shows 169.254.x.x on all machines. The DHCP server is running and healthy. Lease table shows scope is 100% exhausted with unknown MAC addresses.",
+syms:["All users suddenly get APIPA","DHCP server is running normally","DHCP scope 100% full with unknown MACs","Sudden and widespread — entire building affected"],
+opts:["Expand the DHCP scope to add more addresses","This is a DHCP starvation attack — enable DHCP snooping and rate-limit DHCP requests per switch port","Restart the DHCP server","Replace the core switch"],
+ans:1,
+root:"DHCP starvation attack. An attacker sent thousands of DHCP Discover requests with spoofed MAC addresses, exhausting the entire scope. Legitimate clients get no leases and fall back to APIPA.",
+fix:"1) Enable DHCP snooping on all switches. 2) Rate-limit DHCP packets per port (ip dhcp snooping limit rate 10). 3) Clear rogue leases from DHCP server. 4) Configure DHCP snooping binding database. 5) Consider 802.1X for access control."},
+];
+// ═══════════════════════════════════════════════════════════
+// QUIZ QUESTIONS — 80+ total, all N10-009 objectives covered
+// ═══════════════════════════════════════════════════════════
+const QS=[
+// ── DOMAIN 1 ──────────────────────────────────────────────
+{d:"d1",q:"Which OSI layer is responsible for MAC addressing and frame delivery on a local network?",
+o:["Layer 1 — Physical","Layer 2 — Data Link","Layer 3 — Network","Layer 4 — Transport"],a:1,
+ex:"Layer 2 (Data Link) uses MAC addresses to forward frames between devices on the same segment. Switches operate at Layer 2. Layer 3 uses IP addresses.",
+wr:["Layer 1 transmits raw bits — no addressing.","Layer 3 uses IP (logical) addresses for routing between networks.","Layer 4 uses port numbers — not MAC addresses."],obj:"1.1 OSI Model"},
+
+{d:"d1",q:"A workstation shows IP 169.254.55.10/16 with no gateway. What does this indicate?",
+o:["Correctly configured static IP","DHCP lease recently renewed","DHCP server unreachable — APIPA self-assigned","IPv6 transition mechanism"],a:2,
+ex:"169.254.x.x is APIPA. Windows self-assigns this when no DHCP server responds. The device cannot reach outside the local subnet.",
+wr:["Static IPs are never auto-assigned in the 169.254 range.","A renewed lease provides a valid IP from the scope.","IPv6 transition has no connection to 169.254."],obj:"1.4 APIPA"},
+
+{d:"d1",q:"What is the correct order of the DHCP process?",
+o:["Offer, Discover, Request, Acknowledge","Discover, Offer, Request, Acknowledge","Request, Offer, Discover, Acknowledge","Discover, Request, Offer, Acknowledge"],a:1,
+ex:"DORA: Discover (client broadcasts) → Offer (server offers IP) → Request (client formally requests) → Acknowledge (server confirms).",
+wr:["Offer cannot precede Discover.","Request before Offer is impossible — client doesn't know what IP to request.","Server must Offer before client can Request."],obj:"1.5 DHCP"},
+
+{d:"d1",q:"Which protocol maps a known IP address to a MAC address on a local network?",
+o:["RARP","DNS","DHCP","ARP"],a:3,
+ex:"ARP broadcasts 'who has IP X?' on the local segment. The device with that IP responds with its MAC. ARP bridges Layer 2 and Layer 3.",
+wr:["RARP is MAC→IP and is deprecated.","DNS maps hostnames to IPs.","DHCP assigns IPs but doesn't resolve IPs to MACs."],obj:"1.6 ARP"},
+
+{d:"d1",q:"You need at least 4 subnets from 192.168.10.0/24 with minimum 25 usable hosts each. Which mask works BEST?",
+o:["/26 — 62 hosts, 4 subnets","/27 — 30 hosts, 8 subnets","/28 — 14 hosts, 16 subnets","/29 — 6 hosts, 32 subnets"],a:0,
+ex:"/26 gives 62 usable hosts (64-2) and exactly 4 subnets per /24. Meets both requirements with the most headroom.",
+wr:["/27 gives 30 hosts (meets ≥25) but /26 gives more headroom per subnet.","/28 gives 14 usable hosts — fails the 25-host requirement.","/29 gives 6 usable hosts — far below requirement."],obj:"1.7 Subnetting"},
+
+{d:"d1",q:"What is the broadcast address for the network 192.168.50.64/26?",
+o:["192.168.50.127","192.168.50.126","192.168.50.255","192.168.50.63"],a:0,
+ex:"/26 = block size 64. Subnets: .0-.63, .64-.127, .128-.191, .192-.255. The .64 subnet ends at .127 (broadcast). Usable: .65-.126.",
+wr:[".126 is the last usable host — not the broadcast.",".255 is the broadcast for the full /24.",".63 is the broadcast for the first /26 subnet."],obj:"1.7 Subnetting"},
+
+{d:"d1",q:"Which statement BEST describes TCP's three-way handshake?",
+o:["Encrypts data before transmission","Establishes connection and synchronizes sequence numbers","Resolves destination IP to a MAC address","Tests network path latency"],a:1,
+ex:"SYN→SYN-ACK→ACK establishes the connection and synchronizes sequence numbers so both sides can track segment order and acknowledge receipt.",
+wr:["Encryption is handled by TLS — not the TCP handshake.","ARP resolves IPs to MACs — separate Layer 2 process.","Latency testing is done by ping/ICMP."],obj:"1.2 TCP"},
+
+{d:"d1",q:"A router has routes: 10.0.0.0/8 via int0, 10.5.0.0/16 via int1, 0.0.0.0/0 via int2. Packet destined for 10.5.5.5 — which interface?",
+o:["int0 — matches /8","int1 — matches /16","int2 — default route","Packet is dropped"],a:1,
+ex:"Longest prefix match: router always chooses the MOST SPECIFIC matching route. /16 is more specific than /8. Default route used only when no other match exists.",
+wr:["Even though /8 matches, /16 is more specific and wins.","Default is last resort only.","Routers don't drop packets when valid routes exist."],obj:"1.9 Routing"},
+
+{d:"d1",q:"Which IPv6 address type is automatically configured on every interface and cannot be routed beyond the local link?",
+o:["Global Unicast (2000::/3)","Multicast (ff00::/8)","Link-Local (fe80::/10)","Loopback (::1)"],a:2,
+ex:"Link-local (fe80::/10) are auto-configured using EUI-64 or random generation. Used for neighbor discovery and router advertisements. Not routable.",
+wr:["Global unicast is the routable equivalent of public IPv4.","Multicast delivers to groups — not auto-configured per interface.","::1 loopback is one per device — not per interface."],obj:"1.8 IPv6"},
+
+{d:"d1",q:"How many usable host addresses are in the 10.0.0.0/8 network?",
+o:["254","65,534","16,777,214","16,777,216"],a:2,
+ex:"/8 = 24 host bits. Total = 2^24 = 16,777,216. Subtract 2 (network + broadcast) = 16,777,214 usable.",
+wr:["254 = /24 usable hosts.","65,534 = /16 usable hosts.","16,777,216 is total addresses — must subtract 2."],obj:"1.7 Subnetting"},
+
+{d:"d1",q:"Which protocol sends error messages about IP packet processing, and is used by ping?",
+o:["TCP","UDP","ICMP","ARP"],a:2,
+ex:"ICMP (Internet Control Message Protocol) operates at Layer 3. Ping uses echo request/reply. Traceroute uses TTL-exceeded messages. Not for data transport.",
+wr:["TCP is Layer 4 transport for reliable data delivery.","UDP is Layer 4 fast transport — not diagnostic messages.","ARP maps IPs to MACs."],obj:"1.6 ICMP"},
+
+{d:"d1",q:"What are the three cloud service models and what does each provider manage?",
+o:["IaaS: app; PaaS: OS; SaaS: hardware","IaaS: hardware+OS; PaaS: hardware+OS+runtime; SaaS: everything","IaaS: SaaS subset; PaaS: IaaS subset; SaaS: PaaS subset","All three are identical — just marketing terms"],a:1,
+ex:"IaaS (AWS EC2): provider manages hardware, you manage OS up. PaaS (Azure App Service): provider manages up to runtime, you manage app+data. SaaS (Office 365): provider manages everything.",
+wr:["This reverses the responsibility model.","These are distinct service models with different responsibility divisions.","They differ significantly in what the provider manages."],obj:"1.9 Cloud"},
+
+{d:"d1",q:"In a spine-leaf data center architecture, which connections are NOT present?",
+o:["Leaf to spine","Spine to leaf","Leaf to leaf (direct)","Any leaf to any spine"],a:2,
+ex:"In spine-leaf: every leaf connects to EVERY spine. No leaf-to-leaf connections. No spine-to-spine connections. Traffic always traverses one spine. This gives predictable, consistent latency.",
+wr:["Leaf to spine is the fundamental connection of this architecture.","Spine to leaf is the return path.","Any leaf can reach any spine — that's the design."],obj:"1.2 Topology"},
+
+{d:"d1",q:"What is administrative distance, and which has the lowest (most trusted) AD among dynamic protocols?",
+o:["Hop count limit; RIP=1","Metric tie-breaker; OSPF=1","Trustworthiness of routing source; EIGRP=90 is lowest dynamic","Cost calculation; BGP=20 is lowest"],a:2,
+ex:"AD = trustworthiness. Lower = more preferred. Connected=0, Static=1, EIGRP=90, OSPF=110, RIP=120, eBGP=20. EIGRP at 90 is the most trusted dynamic protocol for internal routes.",
+wr:["Hop count is RIP's metric — AD is separate from metric.","AD is not a tie-breaker — it selects between routing protocols.","BGP eBGP=20 is low but EIGRP internal=90 is higher trust."],obj:"1.6 Routing"},
+
+{d:"d1",q:"Which DNS record type maps a hostname to an IPv6 address?",
+o:["A record","PTR record","AAAA record","CNAME record"],a:2,
+ex:"AAAA (quad-A) record maps a hostname to an IPv6 address. A record = IPv4. AAAA = IPv6. PTR = reverse lookup. CNAME = alias to another hostname.",
+wr:["A record maps to IPv4.","PTR maps IP to hostname (reverse DNS).","CNAME creates an alias pointing to another hostname."],obj:"1.5 DNS"},
+
+{d:"d1",q:"What is the valid usable host range for 172.16.5.0/24?",
+o:["172.16.5.0 – 172.16.5.255","172.16.5.1 – 172.16.5.254","172.16.5.0 – 172.16.5.254","172.16.5.1 – 172.16.5.255"],a:1,
+ex:"Network address (.0) and broadcast address (.255) cannot be assigned to hosts. Usable = .1 through .254 = 254 hosts.",
+wr:["Including .0 assigns the network address to a host — invalid.",".255 is the broadcast — cannot be assigned.","Neither .0 nor .255 are usable."],obj:"1.7 Subnetting"},
+
+// ── DOMAIN 2 ──────────────────────────────────────────────
+{d:"d2",q:"What is the primary function of a trunk port on a managed switch?",
+o:["Connects a single end device to one VLAN","Carries traffic for multiple VLANs using 802.1Q tags","Prevents Layer 2 loops via STP","Provides PoE to connected devices"],a:1,
+ex:"Trunk ports carry 802.1Q-tagged frames for multiple VLANs between switches. The 4-byte tag identifies which VLAN each frame belongs to.",
+wr:["Access port connects end devices to one VLAN — no tagging.","Loop prevention is STP's job — separate from trunking.","PoE delivers power — unrelated to VLAN configuration."],obj:"2.3 VLANs"},
+
+{d:"d2",q:"Without STP, what would happen in a network with redundant switch connections?",
+o:["Automatic failover to backup link","Layer 2 broadcast storm that crashes the network","Increased bandwidth from both active links","Traffic load-balanced across links"],a:1,
+ex:"Without STP, redundant paths create Layer 2 loops. Broadcasts forward endlessly, consuming all bandwidth. MAC tables destabilize. Network unusable within seconds.",
+wr:["Failover requires STP to detect failures — raw redundancy without STP creates loops.","Both links active without STP = loop, not more bandwidth.","Load balancing requires LACP with proper negotiation."],obj:"2.4 STP"},
+
+{d:"d2",q:"Which cable standard supports 10 Gbps at the full 100-meter standard distance?",
+o:["Cat5e","Cat6","Cat6a","Cat7"],a:2,
+ex:"Cat6a (augmented) is the TIA standard for 10GBase-T at 100m. Cat6 supports 10G only up to ~55m. Cat5e tops at 1G. Cat7 is ISO/IEC — not TIA.",
+wr:["Cat5e: 1 Gbps max at 100m.","Cat6: 10G at 55m only — not full 100m.","Cat7: ISO standard not referenced in CompTIA objectives."],obj:"2.5 Cabling"},
+
+{d:"d2",q:"What is the maximum wattage per port for PoE+ (802.3at)?",
+o:["7.5W","15.4W","30W","60W"],a:2,
+ex:"802.3at (PoE+) = 30W. 802.3af (original PoE) = 15.4W. 802.3bt (PoE++) = 60-100W. Mnemonic: af=15, at=30, bt=60+.",
+wr:["7.5W is below any PoE standard.","15.4W is 802.3af — original PoE.","60W is 802.3bt — one step above PoE+."],obj:"2.2 PoE"},
+
+{d:"d2",q:"Which routing protocol is a path-vector exterior gateway protocol used between autonomous systems?",
+o:["OSPF","EIGRP","RIP","BGP"],a:3,
+ex:"BGP is the internet's routing protocol connecting autonomous systems (AS) using path-vector routing. Uses TCP port 179. EGP = between autonomous systems.",
+wr:["OSPF is a link-state IGP — within one AS.","EIGRP is a hybrid IGP — Cisco proprietary, within one AS.","RIP is distance-vector IGP — 15 hop max, within one AS."],obj:"2.1 Routing Protocols"},
+
+{d:"d2",q:"802.11ax is known as which Wi-Fi generation and what bands does it support?",
+o:["Wi-Fi 5 — 5GHz only","Wi-Fi 6 — 2.4, 5, and 6GHz","Wi-Fi 4 — 2.4 and 5GHz","Wi-Fi 6E — 6GHz only"],a:1,
+ex:"802.11ax = Wi-Fi 6. Supports 2.4/5/6GHz. OFDMA allows simultaneous multi-client transmission. BSS Coloring reduces interference. 9.6 Gbps theoretical max.",
+wr:["Wi-Fi 5 = 802.11ac — 5GHz only.","Wi-Fi 4 = 802.11n — 2.4 and 5GHz.","Wi-Fi 6E refers specifically to the 6GHz band extension."],obj:"2.6 Wireless"},
+
+{d:"d2",q:"When deploying multiple APs in 2.4GHz, which channel set minimizes co-channel interference?",
+o:["1, 2, 3","1, 6, 11","6, 7, 8","1, 5, 9"],a:1,
+ex:"2.4GHz channels are 22MHz wide, 5MHz apart. Only channels 1, 6, and 11 are fully non-overlapping in the US.",
+wr:["1, 2, 3 heavily overlap — 5MHz apart, 22MHz wide.","6, 7, 8 overlap each other significantly.","1, 5, 9 partially overlap — not fully non-overlapping."],obj:"2.6 Wireless"},
+
+{d:"d2",q:"What is the primary purpose of LACP (Link Aggregation Control Protocol)?",
+o:["Assign IPs to aggregated links","Combine multiple physical links into one logical high-bandwidth link","Encrypt traffic between switches","Prevent broadcast storms"],a:1,
+ex:"LACP (802.3ad) aggregates multiple Ethernet links into one logical link. Benefits: combined throughput + redundancy (failover if one link fails).",
+wr:["IP assignment is DHCP or static config.","Encryption is IPSec/TLS.","Broadcast storm prevention is STP."],obj:"2.7 Link Aggregation"},
+
+{d:"d2",q:"A company needs to connect two buildings 900 meters apart using fiber. What is the BEST choice?",
+o:["Multi-mode OM1","Multi-mode OM3","Single-mode fiber","Cat6a copper"],a:2,
+ex:"MMF maximum: OM3 ~300m for 10G. 900m exceeds all MMF standards. Single-mode supports kilometers — ideal for inter-building over 500m.",
+wr:["OM1 MMF: ~275m max — too short.","OM3 MMF: ~300m for 10G — under 900m.","Cat6a copper: 100m maximum — completely unsuitable."],obj:"2.5 Fiber"},
+
+{d:"d2",q:"Which STP enhancement immediately puts access ports into Forwarding state, bypassing Listening and Learning?",
+o:["RSTP","BPDU Guard","PortFast","Port Security"],a:2,
+ex:"PortFast bypasses STP Listening/Learning states for ports connected to end devices (PCs, printers). Should NEVER be used on switch-to-switch ports. Always pair with BPDU Guard.",
+wr:["RSTP reduces convergence for ALL ports but still goes through states.","BPDU Guard shuts a port if it receives a BPDU — it doesn't bypass STP stages.","Port security limits MAC addresses — unrelated to STP convergence."],obj:"2.4 STP"},
+
+{d:"d2",q:"What switch security feature validates DHCP packets and blocks rogue DHCP servers?",
+o:["Dynamic ARP Inspection","Port Security","DHCP Snooping","BPDU Guard"],a:2,
+ex:"DHCP Snooping marks ports as trusted (uplinks) or untrusted (access). DHCP server responses from untrusted ports are dropped. Also builds a binding table used by DAI.",
+wr:["DAI uses the DHCP snooping table to validate ARP — different function.","Port Security limits MAC addresses — doesn't inspect DHCP packets.","BPDU Guard blocks unauthorized switches — not DHCP."],obj:"2.2 Switching"},
+
+{d:"d2",q:"Which small form-factor transceiver standard supports 10 Gbps and is hot-swappable?",
+o:["SFP","SFP+","QSFP","QSFP28"],a:1,
+ex:"SFP+ is the 10G hot-swappable transceiver. SFP = 1G. QSFP = 40G. QSFP28 = 100G. Inserted into switch/router cages. Media type determined by the transceiver, not the cage.",
+wr:["SFP = 1G — not 10G.","QSFP = 40G — too fast.","QSFP28 = 100G — too fast."],obj:"2.6 Transceivers"},
+
+// ── DOMAIN 3 ──────────────────────────────────────────────
+{d:"d3",q:"Which SNMP component sends unsolicited alerts to the management station when events occur?",
+o:["MIB","OID","Trap","Community String"],a:2,
+ex:"SNMP Traps (port 162 UDP) are sent by agents without being polled. Used for urgent events: interface down, high CPU, threshold crossed. SNMPv3 traps are encrypted.",
+wr:["MIB is a database of manageable objects — not a message type.","OID names a specific variable in the MIB.","Community string is authentication for v1/v2c — a credential."],obj:"3.1 SNMP"},
+
+{d:"d3",q:"An organization requires max 2-hour downtime and max 30-minute data loss after a disaster. Which metrics?",
+o:["MTTR=2h, MTBF=30m","RTO=2h, RPO=30m","RPO=2h, RTO=30m","MTBF=2h, MTTR=30m"],a:1,
+ex:"RTO (Recovery Time Objective) = max downtime = 2 hours. RPO (Recovery Point Objective) = max data loss = 30 minutes. RTO drives recovery speed, RPO drives backup frequency.",
+wr:["MTTR/MTBF measure operational reliability — not DR planning.","These are reversed — RPO=data loss, RTO=downtime.","MTBF is time between failures — an operational metric."],obj:"3.2 DR/BCP"},
+
+{d:"d3",q:"Syslog severity level 2 represents which condition?",
+o:["Emergency — system unusable","Alert — action must be taken","Critical — critical conditions","Error — error conditions"],a:2,
+ex:"Levels: 0=Emergency, 1=Alert, 2=Critical, 3=Error, 4=Warning, 5=Notice, 6=Info, 7=Debug. Mnemonic: 'Every Awesome Cisco Engineer Will Need Ice Daily.'",
+wr:["Emergency is level 0.","Alert is level 1.","Error is level 3 — one below Critical."],obj:"3.3 Syslog"},
+
+{d:"d3",q:"What VPN feature sends only corporate traffic through the tunnel while internet goes direct?",
+o:["Full tunneling","SSL offloading","Split tunneling","MPLS tunneling"],a:2,
+ex:"Split tunneling: corporate-destined traffic goes through VPN, internet traffic goes direct. Reduces VPN bandwidth load but exposes local internet traffic.",
+wr:["Full tunneling sends ALL traffic through VPN — max security, max bandwidth.","SSL offloading decrypts HTTPS at a load balancer — unrelated.","MPLS tunneling is a WAN carrier technology."],obj:"3.5 Remote Access"},
+
+{d:"d3",q:"Which protocol synchronizes clocks across network devices and is critical for log correlation?",
+o:["SNMP","NetFlow","Syslog","NTP"],a:3,
+ex:"NTP uses UDP port 123. Accurate timestamps are critical for: correlating logs during incidents, Kerberos auth (5-minute tolerance), certificate validation.",
+wr:["SNMP monitors and manages — not time sync.","NetFlow collects traffic flow metadata.","Syslog sends logs but relies on NTP for accuracy."],obj:"3.6 NTP"},
+
+{d:"d3",q:"Which First Hop Redundancy Protocol is the open standard (non-Cisco-proprietary)?",
+o:["HSRP","GLBP","VRRP","EIGRP"],a:2,
+ex:"VRRP (Virtual Router Redundancy Protocol) is the IETF open standard (RFC 5798). HSRP and GLBP are Cisco proprietary. All three provide default gateway redundancy.",
+wr:["HSRP is Cisco proprietary.","GLBP is Cisco proprietary and adds load balancing.","EIGRP is a routing protocol — not a gateway redundancy protocol."],obj:"3.3 High Availability"},
+
+{d:"d3",q:"An administrator wants to capture all traffic entering/leaving a server for analysis without disrupting the server. What should be configured on the switch?",
+o:["VLAN tagging","Port mirroring (SPAN)","LACP","PoE"],a:1,
+ex:"SPAN (Switched Port Analyzer) copies traffic from source port(s) to a destination monitoring port. Zero impact on original traffic flow.",
+wr:["VLAN tagging identifies VLAN membership — doesn't copy traffic.","LACP aggregates links — not for traffic analysis.","PoE delivers power — unrelated."],obj:"3.7 Monitoring"},
+
+{d:"d3",q:"Which DNS record type is used to identify mail servers responsible for accepting email for a domain?",
+o:["A record","CNAME record","MX record","PTR record"],a:2,
+ex:"MX (Mail Exchanger) records specify mail servers for a domain with a priority value. Lower priority number = preferred server. Multiple MX records provide redundancy.",
+wr:["A record maps hostname to IPv4.","CNAME creates an alias to another hostname.","PTR is reverse DNS — maps IP to hostname."],obj:"3.4 DNS"},
+
+{d:"d3",q:"A DHCP server is on a different subnet than the clients. What must be configured to allow clients to receive leases?",
+o:["Create a second DHCP server on each subnet","Configure a DHCP relay agent (ip helper-address) on the router interface","Use static IP assignments for all clients","Enable DHCP snooping on the switch"],a:1,
+ex:"DHCP relay agent (ip helper-address) forwards client DHCP broadcasts as unicast to the DHCP server across subnets. Configured on the router's client-facing interface.",
+wr:["A second DHCP server works but is wasteful and harder to manage.","Static IPs are not scalable and defeat the purpose of DHCP.","DHCP snooping filters rogue DHCP servers — doesn't relay across subnets."],obj:"3.5 DHCP"},
+
+// ── DOMAIN 4 ──────────────────────────────────────────────
+{d:"d4",q:"Which attack intercepts communications between two parties to eavesdrop or modify traffic?",
+o:["DoS attack","SQL Injection","Man-in-the-Middle","MAC Flooding"],a:2,
+ex:"MitM intercepts traffic between two parties. ARP poisoning is one method — corrupts ARP caches to redirect traffic through the attacker.",
+wr:["DoS disrupts availability — doesn't intercept communications.","SQL injection targets databases via input fields.","MAC flooding overwhelms switch MAC table — different attack."],obj:"4.2 Attacks"},
+
+{d:"d4",q:"What is the key functional difference between IDS and IPS?",
+o:["IDS blocks traffic; IPS only alerts","IPS blocks traffic; IDS only alerts","IDS is hardware; IPS is software","IPS decrypts traffic; IDS does not"],a:1,
+ex:"IDS = passive, out-of-band, detects and ALERTS only. No traffic impact if it fails. IPS = inline, active, detects and BLOCKS. Failure can affect traffic flow.",
+wr:["This is reversed — IPS blocks, IDS detects.","Both exist as hardware and software.","Neither is defined by decryption capability."],obj:"4.3 IDS/IPS"},
+
+{d:"d4",q:"An organization needs wireless users to authenticate against Active Directory with individual credentials. Best solution?",
+o:["WPA2-Personal with strong PSK","WPA2-Enterprise with 802.1X and RADIUS","WPA3-Personal with SAE","WEP with RADIUS backend"],a:1,
+ex:"WPA2-Enterprise uses 802.1X. Each user authenticates with individual credentials via RADIUS, which proxies to Active Directory. No shared PSK.",
+wr:["WPA2-Personal uses a single shared PSK — no individual AD credentials.","WPA3-Personal (SAE) is still a shared key.","WEP is broken — never use."],obj:"4.4 Wireless Security"},
+
+{d:"d4",q:"A firewall rule: PERMIT TCP 192.168.1.0/24 ANY EQ 443. What does this allow?",
+o:["All traffic from internet to 192.168.1.0/24","TCP port 443 FROM 192.168.1.0/24 TO any destination","Blocks HTTPS from all sources","UDP port 443 from 192.168.1.0/24"],a:1,
+ex:"ACL syntax: action protocol source destination port. PERMIT TCP from 192.168.1.0/24 to ANY on port 443 = allows that subnet to initiate HTTPS connections outbound.",
+wr:["SOURCE is 192.168.1.0/24 — traffic flows FROM this subnet.","PERMIT = allow — not block.","TCP is explicitly specified — not UDP."],obj:"4.3 ACLs"},
+
+{d:"d4",q:"What does WPA3's SAE protect against that WPA2-PSK cannot?",
+o:["Replay attacks","Offline dictionary attacks against captured handshakes","Physical layer jamming","Session hijacking"],a:1,
+ex:"WPA2-PSK: attacker captures 4-way handshake and runs offline dictionary/brute-force. SAE (Dragonfly): password is never transmitted, preventing offline attacks entirely.",
+wr:["Both address replay attacks via sequence numbers.","Physical jamming is a wireless availability attack — unrelated to auth.","Session hijacking is addressed by encryption — both versions provide this."],obj:"4.4 WPA3"},
+
+{d:"d4",q:"Which principle states users should have only the minimum access rights required for their job?",
+o:["Defense in Depth","Separation of Duties","Least Privilege","Zero Trust"],a:2,
+ex:"Least Privilege limits user rights to only what is necessary. Minimizes damage from compromised accounts, insider threats, and accidental changes.",
+wr:["Defense in Depth = multiple security layers — about architecture.","Separation of Duties = no single person completes a critical process alone.","Zero Trust = never trust always verify — broader architectural principle."],obj:"4.1 Security Concepts"},
+
+{d:"d4",q:"Which attack involves sending double-tagged 802.1Q frames to access a different VLAN?",
+o:["ARP poisoning","VLAN hopping (double tagging)","MAC flooding","DHCP starvation"],a:1,
+ex:"Double-tag VLAN hopping: attacker sends frame with two 802.1Q tags. First tag matches the native VLAN of trunk (stripped by first switch), second tag carries target VLAN. Mitigate: change native VLAN away from data VLANs, disable auto-trunking.",
+wr:["ARP poisoning corrupts ARP caches for MitM — different attack.","MAC flooding overwhelms switch MAC tables.","DHCP starvation exhausts the DHCP scope."],obj:"4.2 VLAN Hopping"},
+
+{d:"d4",q:"Which type of firewall tracks the state of active connections and auto-permits return traffic?",
+o:["Packet filter","Stateful inspection","Application-layer proxy","UTM"],a:1,
+ex:"Stateful firewalls maintain a connection state table. Return traffic matching established sessions is automatically permitted. No explicit inbound rules needed for outbound-initiated connections.",
+wr:["Packet filters check each packet independently — no state table.","Application-layer proxy inspects Layer 7 content — different function.","UTM combines multiple security functions — stateful is the specific feature here."],obj:"4.3 Firewalls"},
+
+{d:"d4",q:"What network design places public-facing servers in a segment between two firewalls?",
+o:["VLAN segmentation","NAT implementation","DMZ design","VPN tunnel"],a:2,
+ex:"DMZ sits between outer firewall (internet-facing) and inner firewall (internal network). Public servers (web, email, DNS) in DMZ. External users reach DMZ but not internal network.",
+wr:["VLANs segment internal networks — not a double-firewall perimeter.","NAT hides internal IPs — doesn't create a dual-firewall zone.","VPN creates encrypted tunnels — not a network architecture zone."],obj:"4.3 DMZ"},
+
+{d:"d4",q:"Which encryption standard is symmetric, uses 128/192/256-bit keys, and replaced DES?",
+o:["RSA","ECC","AES","RC4"],a:2,
+ex:"AES (Advanced Encryption Standard) is the symmetric block cipher standard. Used in WPA2/WPA3, TLS, IPSec. Replaced DES (broken) and 3DES (slow).",
+wr:["RSA is asymmetric — for key exchange and signatures.","ECC is asymmetric — efficient key exchange.","RC4 is a deprecated stream cipher used in old WEP."],obj:"4.5 Encryption"},
+
+{d:"d4",q:"In IPSec, which protocol provides encryption AND integrity for the packet payload?",
+o:["AH (Authentication Header)","ESP (Encapsulating Security Payload)","IKE (Internet Key Exchange)","GRE (Generic Routing Encapsulation)"],a:1,
+ex:"ESP provides encryption + integrity protection for the payload. AH provides integrity only — no encryption. IKE negotiates keys. In IPSec VPNs, ESP is almost always used.",
+wr:["AH provides authentication and integrity only — no encryption.","IKE negotiates encryption keys — not a data protection protocol.","GRE is a generic tunneling protocol — no security built in."],obj:"4.6 IPSec"},
+
+// ── DOMAIN 5 ──────────────────────────────────────────────
+{d:"d5",q:"A user can ping 8.8.8.8 but cannot browse websites by name. Most likely cause?",
+o:["Default gateway misconfiguration","DNS failure","NIC hardware failure","Firewall blocking all outbound traffic"],a:1,
+ex:"Successful ping to external IP proves IP connectivity and routing work. Name resolution failure = DNS problem. DNS server may be down, misconfigured, or blocked.",
+wr:["Wrong gateway would also fail pinging 8.8.8.8.","NIC failure would prevent all connectivity.","Firewall blocking all outbound would also block the ping."],obj:"5.1 Troubleshooting"},
+
+{d:"d5",q:"According to CompTIA's troubleshooting methodology, what is Step 3?",
+o:["Identify the problem","Establish a theory of probable cause","Test the theory to determine cause","Establish an action plan"],a:2,
+ex:"Steps: 1=Identify, 2=Theory, 3=TEST THE THEORY (confirm or eliminate hypothesis), 4=Action plan, 5=Implement+verify, 6=Document. Testing step 3 validates before committing.",
+wr:["Identifying is Step 1.","Establishing theory is Step 2.","Action plan is Step 4 — AFTER theory is confirmed."],obj:"5.1 Methodology"},
+
+{d:"d5",q:"A switch interface shows high late collision counts since a NIC was replaced. Most likely cause?",
+o:["Failing SFP module","Duplex mismatch","VLAN misconfiguration","Faulty cable"],a:1,
+ex:"Late collisions (after 64-byte window) are the definitive sign of duplex mismatch. One side full-duplex, other half-duplex. Recent NIC replacement is the trigger.",
+wr:["SFP failures cause interface down or CRC errors — not late collisions specifically.","VLAN issues cause connectivity failure — not late collision counters.","Faulty cables cause CRC errors — not the late collision pattern."],obj:"5.2 Physical"},
+
+{d:"d5",q:"Which command displays active TCP connections and listening ports on a Windows workstation?",
+o:["ipconfig /all","arp -a","netstat -an","tracert 8.8.8.8"],a:2,
+ex:"netstat -an: -a = all connections and listening ports, -n = numeric (don't resolve hostnames). Shows source/dest IP, port, and state (LISTENING, ESTABLISHED, TIME_WAIT).",
+wr:["ipconfig /all shows IP configuration — not connections.","arp -a shows IP→MAC mappings.","tracert traces path to destination."],obj:"5.6 Tools"},
+
+{d:"d5",q:"traceroute shows normal hops 1-5 then timeouts at hop 6 and all hops after. What does this MOST likely indicate?",
+o:["Destination host is offline","Device at hop 6 is blocking ICMP TTL-exceeded messages","Network congestion at hop 5","DNS server failure"],a:1,
+ex:"Timeouts starting at specific hop = that router/firewall is blocking ICMP TTL-exceeded messages. The destination may still be reachable — ICMP is just blocked.",
+wr:["If destination down, you'd reach the last hop before it — not timeout consistently at 6.","Congestion at hop 5 shows high latency at hop 5, not timeouts from 6 onward.","DNS failure prevents name resolution — doesn't affect traceroute using IPs."],obj:"5.6 Tools"},
+
+{d:"d5",q:"A wireless user reports 'connected but slow' with excellent signal. What should you check FIRST?",
+o:["IP address conflict","Channel congestion or co-channel interference","DNS server response time","Duplex mismatch on AP uplink"],a:1,
+ex:"Strong signal + low throughput = performance problem not signal problem. Most likely: too many APs/devices on same channel causing co-channel interference. Use Wi-Fi analyzer.",
+wr:["IP conflict causes connectivity loss — not just slowness.","DNS affects name resolution — not sustained throughput.","Duplex mismatch is possible but co-channel interference is far more common."],obj:"5.4 Wireless"},
+
+{d:"d5",q:"A workstation has IP 192.168.1.100/24, gateway 192.168.1.1. It can reach local hosts but not internet. ping 192.168.1.1 FAILS. First troubleshooting layer?",
+o:["Layer 7 — Application","Layer 4 — Transport","Layer 3 — Network","Layer 1/2 — Physical/Data Link"],a:3,
+ex:"Cannot reach directly-connected gateway = Layer 1/2 problem. Gateway is same subnet — no routing needed. Check: cable, link LED, switch port, NIC. Bottom-up approach.",
+wr:["Layer 7 = application issues — irrelevant when basic connectivity fails.","Layer 4 sessions can't establish if Layers 1/2 are broken.","Layer 3 routing issues don't explain why a directly-connected gateway ping fails."],obj:"5.1 Methodology"},
+
+{d:"d5",q:"You find two ARP cache entries for the default gateway IP with different MAC addresses. What does this MOST likely indicate?",
+o:["Normal DHCP renewal","ARP poisoning / MitM attack","Duplicate IP address conflict","NIC teaming configuration"],a:1,
+ex:"One IP mapping to two MACs in ARP cache = ARP poisoning. Attacker sent fake ARP replies associating their MAC with the gateway IP to intercept outbound traffic.",
+wr:["DHCP renewal doesn't create duplicate MAC entries for same IP.","IP conflict causes error dialogs — not dual MAC entries for one IP.","NIC teaming presents one virtual MAC — not two separate MACs."],obj:"5.5 Security"},
+
+{d:"d5",q:"A switch port shows high CRC errors but few late collisions. Most likely cause?",
+o:["Duplex mismatch","Damaged cable or connector","VLAN misconfiguration","MTU mismatch"],a:1,
+ex:"CRC errors without late collisions = physical layer problem: damaged cable, bad connector, crimping error, or EMI. Late collisions specifically = duplex mismatch.",
+wr:["Duplex mismatch causes LATE COLLISIONS specifically.","VLAN misconfiguration causes connectivity failure — not CRC errors.","MTU mismatch causes fragmentation at higher layers."],obj:"5.2 Physical"},
+
+{d:"d5",q:"Which tool is used to locate a break in a fiber optic cable and measure the distance to the break?",
+o:["TDR","Cable tester","OTDR","Toner probe"],a:2,
+ex:"OTDR (Optical Time Domain Reflectometer) sends light pulses and analyzes reflections to find breaks, splices, and connectors in fiber. Also measures distance to faults.",
+wr:["TDR is for copper cable fault location — not fiber.","Cable tester checks continuity and pinout — not break distance.","Toner probe traces cable paths through walls — not fault location."],obj:"5.6 Tools"},
+
+{d:"d5",q:"nmap is used to scan a network. Which nmap flag detects operating systems of discovered hosts?",
+o:["-sV (service version)","--open (open ports only)","-O (OS detection)","-A (aggressive, includes -O -sV)"],a:2,
+ex:"-O flag enables OS detection using TCP/IP fingerprinting. -sV detects service versions. -A enables -O -sV plus scripts and traceroute together.",
+wr:["-sV detects service/version info — not OS.","--open filters output to show open ports only.","While -A includes -O, the question asks specifically about OS detection flag."],obj:"5.6 Tools"},
+
+{d:"d5",q:"A new PC cannot communicate on the network. ipconfig shows correct IP, mask, and gateway. ping gateway fails. What should you check FIRST?",
+o:["Replace the NIC","Check VLAN assignment on the switch port","Verify DNS server settings","Check default route on gateway router"],a:1,
+ex:"Correct IP config but can't reach gateway on same subnet = Layer 2 issue. Most likely the switch port is in the wrong VLAN — the PC's subnet doesn't match the VLAN the port is in.",
+wr:["NIC replacement is premature — check config first.","DNS settings only matter for name resolution — ping to gateway by IP would still work.","Gateway routing is Layer 3 — problem is that PC can't even reach the gateway."],obj:"5.3 Network Issues"},
+];
+// ═══════════════════════════════════════════════════════════
+// SUBNETTING PROBLEMS
+// ═══════════════════════════════════════════════════════════
+const SUBNET_PROBS={
+easy:[
+  {ip:"192.168.1.0",cidr:24,q:"How many usable host addresses?",ans:"254",hint:"2^8 - 2 = 254"},
+  {ip:"10.0.0.0",cidr:8,q:"Subnet mask in dotted decimal?",ans:"255.0.0.0",hint:"8 network bits"},
+  {ip:"172.16.0.0",cidr:16,q:"Broadcast address?",ans:"172.16.255.255",hint:"All host bits = 1"},
+  {ip:"192.168.5.0",cidr:24,q:"Network address?",ans:"192.168.5.0",hint:"All host bits = 0"},
+  {ip:"10.10.10.0",cidr:30,q:"How many usable hosts?",ans:"2",hint:"/30 = point-to-point, 4-2=2"},
+  {ip:"192.168.0.0",cidr:16,q:"How many usable hosts?",ans:"65534",hint:"2^16 - 2 = 65,534"},
+  {ip:"10.0.0.0",cidr:24,q:"Block size?",ans:"256",hint:"256 - 0 = 256 (last octet)"},
+  {ip:"192.168.1.0",cidr:28,q:"How many usable hosts?",ans:"14",hint:"2^4 - 2 = 14"},
+],
+medium:[
+  {ip:"192.168.10.64",cidr:26,q:"Broadcast address?",ans:"192.168.10.127",hint:"Block=64, .64+64-1=.127"},
+  {ip:"172.16.5.0",cidr:27,q:"How many subnets fit in a /24?",ans:"8",hint:"Borrowed bits: 27-24=3, 2^3=8"},
+  {ip:"10.1.1.0",cidr:25,q:"Network address of second subnet?",ans:"10.1.1.128",hint:"Block=128, second starts at .128"},
+  {ip:"192.168.100.128",cidr:26,q:"Valid host range?",ans:"192.168.100.129 - 192.168.100.190",hint:"Network+1 to Broadcast-1"},
+  {ip:"172.20.0.0",cidr:20,q:"How many usable hosts per subnet?",ans:"4094",hint:"2^12 - 2 = 4094"},
+  {ip:"10.0.0.0",cidr:22,q:"Broadcast address?",ans:"10.0.3.255",hint:"Block=1024, spans 4 class C nets"},
+  {ip:"192.168.1.200",cidr:29,q:"Network address of this subnet?",ans:"192.168.1.200",hint:"Block=8, multiples: 192,200,208..."},
+  {ip:"172.16.0.0",cidr:22,q:"How many usable hosts?",ans:"1022",hint:"2^10 - 2 = 1022"},
+],
+hard:[
+  {ip:"10.0.0.0",cidr:19,q:"Broadcast of the 3rd subnet?",ans:"10.0.95.255",hint:"Block=8192; 3rd subnet: 10.0.64.0 - 10.0.95.255"},
+  {ip:"172.16.0.0",cidr:18,q:"How many /24 subnets fit in one /18?",ans:"64",hint:"2^(24-18) = 2^6 = 64"},
+  {ip:"192.168.50.0",cidr:28,q:"Host ranges for subnets 1-3?",ans:".1-.14, .17-.30, .33-.46",hint:"Block=16: 0-15, 16-31, 32-47"},
+  {ip:"10.5.0.0",cidr:22,q:"Wildcard mask?",ans:"0.0.3.255",hint:"Wildcard = inverse of subnet mask"},
+  {ip:"192.168.1.200",cidr:29,q:"What is the broadcast address?",ans:"192.168.1.207",hint:"Block=8, 200+8-1=207"},
+  {ip:"10.0.0.0",cidr:20,q:"How many /28 subnets fit in one /20?",ans:"256",hint:"2^(28-20) = 2^8 = 256"},
+],
+};
+
+// ═══════════════════════════════════════════════════════════
+// BADGES
+// ═══════════════════════════════════════════════════════════
+const BADGES=[
+  {id:"ff",icon:"🃏",n:"First Flip",d:"Complete your first flashcard",e:false},
+  {id:"cs",icon:"🎴",n:"Card Shark",d:"Complete 50 flashcards",e:false},
+  {id:"fq",icon:"📝",n:"Quiz Starter",d:"Answer your first quiz question",e:false},
+  {id:"pq",icon:"🏆",n:"Perfect Score",d:"Score 100% on any quiz",e:false},
+  {id:"sp",icon:"🧮",n:"Subnet Pro",d:"Solve 5 subnetting problems",e:false},
+  {id:"pm",icon:"🔌",n:"Port Master",d:"Complete ports drill 10 times",e:false},
+  {id:"s3",icon:"🔥",n:"On Fire",d:"3-day study streak",e:false},
+  {id:"s7",icon:"⚡",n:"Lightning",d:"7-day study streak",e:false},
+  {id:"ts",icon:"🔍",n:"Sherlock",d:"Complete a troubleshooting scenario",e:false},
+  {id:"dc",icon:"🎯",n:"Domain Master",d:"Master all cards in any domain",e:false},
+  {id:"nt",icon:"📓",n:"Note Taker",d:"Create your first note",e:false},
+  {id:"ex",icon:"🎓",n:"Exam Ready",d:"Complete a mock exam",e:false},
+  {id:"c1",icon:"💯",n:"Century",d:"Answer 100 quiz questions",e:false},
+  {id:"r5",icon:"⭐",n:"Halfway",d:"Reach 50% readiness",e:false},
+  {id:"r8",icon:"🌟",n:"Nearly Ready",d:"Reach 80% readiness",e:false},
+  {id:"s14",icon:"🚀",n:"Unstoppable",d:"14-day study streak",e:false},
+  {id:"q500",icon:"🧠",n:"Knowledge Base",d:"Answer 500 quiz questions",e:false},
+];
+
+// ═══════════════════════════════════════════════════════════
+// AI KNOWLEDGE BASE
+// ═══════════════════════════════════════════════════════════
+const AI_KB={
+"osi":"OSI has 7 layers. Mnemonic: 'Please Do Not Throw Sausage Pizza Away' (L1→L7). L1=Physical (hubs,cables), L2=Data Link (switches,MAC,frames), L3=Network (routers,IP,packets), L4=Transport (TCP/UDP,ports,segments), L5=Session, L6=Presentation (encryption,compression), L7=Application (HTTP,DNS,SMTP). PDU names: bits→frames→packets→segments.",
+"subnet":"Key values: /24=254 hosts, /25=126, /26=62, /27=30, /28=14, /29=6, /30=2 (P2P). Formula: 2^(host bits)-2. Block size = 256 minus last subnet mask octet. First subnet starts at 0, next starts at block size. Broadcast = next network address -1.",
+"dhcp":"DORA: Discover→Offer→Request→Acknowledge. Ports 67(server)/68(client). Failure→APIPA 169.254.x.x. Fix: ipconfig /release then /renew. Relay agent (ip helper-address) forwards DHCP across subnets. DHCP snooping blocks rogue servers.",
+"dns":"Port 53 UDP (queries), TCP (zone transfers >512B). Record types: A=IPv4, AAAA=IPv6, CNAME=alias, MX=mail, PTR=reverse, TXT=SPF/DKIM, SOA=zone authority, NS=name server. Flush cache: ipconfig /flushdns. DNS poisoning: corrupts cache with wrong IPs.",
+"tcp":"Reliable, ordered, connection-oriented. SYN→SYN-ACK→ACK handshake. Sequence numbers + ACKs ensure delivery. Slower than UDP. Use for: HTTP, HTTPS, SSH, FTP, SMTP. TCP vs UDP: TCP=reliable slow, UDP=fast unreliable.",
+"udp":"Fast, connectionless, no guarantee. No handshake, no retransmit. Use for: DNS, DHCP, TFTP, VoIP, streaming, gaming. Port examples: DNS=53, DHCP=67/68, TFTP=69, SNMP=161/162, NTP=123, Syslog=514.",
+"vlan":"VLANs = logical L2 segmentation on one physical switch. 802.1Q adds 4-byte tag. Trunk=multiple VLANs between switches. Access=one VLAN to end device. Need L3 SVI or router-on-a-stick for inter-VLAN routing. DHCP snooping and DAI secure VLANs.",
+"wifi":"802.11b=11M/2.4G, 802.11g=54M/2.4G, 802.11n=Wi-Fi4/600M/both, 802.11ac=Wi-Fi5/3.5G/5G, 802.11ax=Wi-Fi6/9.6G/all. 2.4GHz non-overlapping: channels 1, 6, 11 ONLY. 5GHz has more channels. Strong signal + slow speed = co-channel interference. Site survey before deployment.",
+"ports":"Key ports: 20/21=FTP, 22=SSH/SFTP/SCP, 23=Telnet, 25=SMTP, 49=TACACS+, 53=DNS, 67/68=DHCP, 69=TFTP, 80=HTTP, 110=POP3, 123=NTP, 143=IMAP, 161/162=SNMP, 389=LDAP, 443=HTTPS, 445=SMB, 514=Syslog, 636=LDAPS, 1812/1813=RADIUS, 3389=RDP. Secure versions: 22(SSH),443(HTTPS),636(LDAPS),993(IMAPS),995(POP3S),587(SMTP+TLS).",
+"security":"CIA=Confidentiality/Integrity/Availability. AAA: Auth(who)+Authz(what)+Accounting(what did). RADIUS=UDP 1812/1813 (encrypts only password). TACACS+=TCP 49 (encrypts entire packet). IDS=alerts only. IPS=inline blocks. WPA3=SAE prevents offline attacks. Zero Trust=never trust always verify. Least privilege=minimum necessary access.",
+"troubleshoot":"6 steps: Identify→Theory→Test→Plan→Implement→Document. Bottom-up=physical first. Late collisions=duplex mismatch (definitive). 169.254=DHCP fail. Can ping IP not name=DNS fail. Local OK not internet=default gateway issue. CRC errors=physical layer (cable/connector). OTDR=fiber fault. TDR=copper fault.",
+"routing":"Longest prefix match wins always. AD (trustworthiness): Connected=0, Static=1, EIGRP=90, OSPF=110, RIP=120, eBGP=20. Floating static=high AD backup route. OSPF=link-state Dijkstra cost metric. BGP=path-vector TCP 179 between AS. RIP=distance-vector 15 hop max legacy.",
+"ipv6":"128 bits, 8 hex groups, :: compresses zeros. fe80::/10=link-local (auto, not routable). 2000::/3=global unicast (routable). ::1=loopback. ff00::/8=multicast (no broadcast in IPv6). NDP replaces ARP: RS/RA for routers, NS/NA for neighbors. 6to4 and Teredo for tunneling over IPv4.",
+"cloud":"IaaS=you manage OS up (AWS EC2, Azure VM). PaaS=you manage app+data (Azure App Service, Google App Engine). SaaS=vendor manages all (Office 365, Gmail, Salesforce). Public=shared multi-tenant. Private=dedicated. Hybrid=mix. Multi-cloud=multiple public providers.",
+"traps":"EXAM TRAPS: Late collisions=duplex mismatch (NOT cable). Cat6≠Cat6a for 10G@100m. IDS alerts/IPS blocks. RPO=data loss, RTO=downtime (not swapped). WPA3=SAE not PSK. TACACS+=TCP 49, RADIUS=UDP 1812. /30=only 2 usable hosts. 169.254=APIPA DHCP fail. BPDU Guard needs PortFast enabled first. AH=no encryption, ESP=encryption+integrity.",
+"pass":"Study priority: 1)D1 OSI+subnetting (foundation for everything). 2)D5 Troubleshooting (21% of exam, scenario-based). 3)D4 Security (20% exam weight). 4)D2 Implementation. 5)D3 Operations. Aim 80%+ readiness before booking. Know all ports, know subnetting cold, know the 6-step methodology. Book the exam with a real date — it forces urgency.",
+};
+// ═══════════════════════════════════════════════════════════
+// STATE & PERSISTENCE
+// ═══════════════════════════════════════════════════════════
+let S={xp:0,lvl:1,streak:0,lastDay:"",examDate:"",
+  dailyGoal:20,dailyDone:0,
+  badges:JSON.parse(JSON.stringify(BADGES)),
+  dp:{d1:{cards:{},ts:{},qc:0,qt:0},
+      d2:{cards:{},ts:{},qc:0,qt:0},
+      d3:{cards:{},ts:{},qc:0,qt:0},
+      d4:{cards:{},ts:{},qc:0,qt:0},
+      d5:{cards:{},ts:{},qc:0,qt:0}},
+  tqa:0,tqc:0,subs:0,portsDone:0,trbld:0,
+  notes:[],qhist:[]};
+
+function sv(){try{localStorage.setItem("np5",JSON.stringify(S));}catch(e){}}
+function ld(){
+  try{
+    const d=localStorage.getItem("np5");
+    if(d){
+      const p=JSON.parse(d);
+      S=Object.assign({},S,p);
+      // Merge badges safely
+      S.badges=BADGES.map(b=>{
+        const ex=p.badges&&p.badges.find(x=>x.id===b.id);
+        return ex?{...b,e:ex.e}:{...b};
+      });
+      // Ensure dp has ts object for timestamp tracking
+      Object.keys(S.dp).forEach(did=>{
+        if(!S.dp[did].ts)S.dp[did].ts={};
+      });
+    }
+  }catch(e){}
+}
+
+function addXP(n,label){
+  S.xp+=n;
+  const nl=Math.floor(S.xp/500)+1;
+  if(nl>S.lvl){S.lvl=nl;toast("⬆️ Level "+S.lvl+"!");}
+  if(label)toast("+"+n+" XP — "+label);
+  updStreak();sv();rfHome();
+}
+function updStreak(){
+  const today=new Date().toDateString();
+  if(S.lastDay!==today){
+    const yst=new Date(Date.now()-86400000).toDateString();
+    S.streak=(S.lastDay===yst)?S.streak+1:1;
+    S.lastDay=today;
+    S.dailyDone=Math.min(S.dailyDone+1,S.dailyGoal);
+  }
+}
+function earnBadge(id){
+  const b=S.badges.find(x=>x.id===id);
+  if(b&&!b.e){b.e=true;toast("🏅 "+b.n);sv();}
+}
+function calcReady(){
+  let sc=0;
+  DOM.forEach(d=>{
+    const p=S.dp[d.id],cards=FC[d.id];
+    const known=Object.values(p.cards).filter(v=>v>=3).length;
+    const csc=(known/cards.length)*50;
+    const qsc=p.qt>0?(p.qc/p.qt)*50:0;
+    sc+=(csc+qsc)*(d.w/100);
+  });
+  return Math.round(sc);
+}
+function domMastery(did){
+  const p=S.dp[did],cards=FC[did];
+  const k=Object.values(p.cards).filter(v=>v>=3).length;
+  const cp=Math.round((k/cards.length)*100);
+  const qp=p.qt>0?Math.round((p.qc/p.qt)*100):0;
+  return Math.round(cp*.5+qp*.5);
+}
+function shuf(a){return[...a].sort(()=>Math.random()-.5);}
+
+// ═══════════════════════════════════════════════════════════
+// NAVIGATION — FIXED: no bare event globals, no double goscr
+// ═══════════════════════════════════════════════════════════
+let stack=["s-home"];
+let curDom="d1";
+let QST={};let EXS={};let SUB={};let PRT={};let FLS={};
+
+function goscr(id){
+  const cur=document.getElementById(stack[stack.length-1]);
+  if(cur&&cur.id!==id){cur.classList.add("prev");setTimeout(()=>cur.classList.remove("prev"),300);}
+  const next=document.getElementById(id);
+  if(next&&!next.classList.contains("active")){next.classList.add("active");stack.push(id);}
+}
+function goback(){
+  if(stack.length<=1)return;
+  const cur=document.getElementById(stack.pop());
+  if(cur){cur.classList.remove("active");cur.classList.remove("prev");}
+  rfHome();
+}
+function navTo(s){
+  while(stack.length>1){
+    const x=document.getElementById(stack.pop());
+    if(x){x.classList.remove("active");x.classList.remove("prev");}
+  }
+  document.querySelectorAll(".nb").forEach(b=>b.classList.remove("on"));
+  const nb=document.getElementById("n-"+s);if(nb)nb.classList.add("on");
+  if(s==="home"){rfHome();}
+  else if(s==="study"){renderSN();goscr("s-studynav");}
+  else if(s==="practice"){renderPN();goscr("s-pracnav");}
+  else if(s==="labs"){renderLN();goscr("s-labsnav");}
+  else if(s==="stats"){renderStats();goscr("s-stats");}
+}
+function openM(id){document.getElementById(id).classList.add("open");}
+function closeM(id){document.getElementById(id).classList.remove("open");}
+function openConfirm(title,body,cb){
+  document.getElementById("mc-title").textContent=title;
+  document.getElementById("mc-body").textContent=body;
+  document.getElementById("mc-ok").onclick=()=>{closeM("m-confirm");cb();};
+  openM("m-confirm");
+}
+let tt;
+function toast(msg){
+  const t=document.getElementById("toast");
+  t.textContent=msg;t.classList.add("show");
+  clearTimeout(tt);tt=setTimeout(()=>t.classList.remove("show"),2600);
+}
+
+// ═══════════════════════════════════════════════════════════
+// HOME
+// ═══════════════════════════════════════════════════════════
+function rfHome(){
+  const r=calcReady();
+  const circ=169.6,off=circ-(r/100)*circ;
+  const ring=document.getElementById("rring");if(ring)ring.style.strokeDashoffset=off;
+  const rp=document.getElementById("rpct");if(rp)rp.textContent=r+"%";
+  const xl=document.getElementById("h-xp");if(xl)xl.textContent=S.xp+" XP";
+  const sl=document.getElementById("h-st");if(sl)sl.textContent="🔥 "+S.streak+" streak";
+  const h=new Date().getHours();
+  const gr=document.getElementById("h-greet");
+  if(gr)gr.textContent=h<12?"Good morning 👋":h<17?"Good afternoon 👋":"Good evening 👋";
+  const tips=["Consistency beats intensity — study daily.","Focus on your weakest domain first.","Aim 80%+ readiness before scheduling the exam.","Active recall beats passive reading.","Book the exam date — it creates real urgency."];
+  const tp=document.getElementById("h-tip");if(tp)tp.textContent=tips[Math.floor(Math.random()*tips.length)];
+  const gp=Math.min(100,Math.round((S.dailyDone/S.dailyGoal)*100));
+  const gpe=document.getElementById("h-gp");if(gpe)gpe.textContent=gp+"%";
+  const gb=document.getElementById("h-gb");if(gb)gb.style.width=gp+"%";
+  // Exam countdown
+  const cd=document.getElementById("h-countdown");
+  if(cd){
+    if(S.examDate){
+      const days=Math.ceil((new Date(S.examDate)-new Date())/(86400000));
+      if(days>0){
+        cd.style.display="block";
+        cd.innerHTML=`<div class="card" style="background:var(--bg4);border-color:var(--o)40;display:flex;align-items:center;gap:12px;">
+          <div style="text-align:center;min-width:54px;"><div style="font-family:'Space Mono',monospace;font-size:24px;font-weight:700;color:var(--o);">${days}</div><div style="font-size:9px;color:var(--text4);letter-spacing:1px;">DAYS</div></div>
+          <div style="flex:1;"><div style="font-size:13px;font-weight:700;">Exam Countdown</div><div style="font-size:11px;color:var(--text3);margin-top:2px;">${new Date(S.examDate).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'})}</div></div>
+          <button style="background:none;border:none;color:var(--text4);font-size:13px;cursor:pointer;padding:4px;" onclick="openM('m-examdate')">✏️</button>
+        </div>`;
+      }else if(days===0){cd.style.display="block";cd.innerHTML=`<div class="card" style="border-color:var(--g);background:var(--g)10;text-align:center;font-weight:700;color:var(--g);">🎓 Exam day! Good luck!</div>`;}
+      else{cd.style.display="none";}
+    }else{
+      cd.style.display="block";
+      cd.innerHTML=`<button class="btn bg bf" style="border-style:dashed;font-size:12px;" onclick="openM('m-examdate')">📅 Set your exam date</button>`;
+    }
+  }
+  // Domains
+  const dc=document.getElementById("h-domains");
+  if(dc){dc.innerHTML=DOM.map(d=>{
+    const m=domMastery(d.id);
+    const sc=m>=70?"var(--g)":m>=40?"var(--y)":"var(--r)";
+    return`<div class="card" style="margin-bottom:8px;cursor:pointer;border-color:${m>0?d.col+"50":"var(--border)"}" onclick="openDom('${d.id}')">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div style="width:36px;height:36px;border-radius:9px;background:${d.col}18;border:1px solid ${d.col}40;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;">${domIcon(d.id)}</div>
+        <div style="flex:1;min-width:0;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;">
+            <div style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:200px;">${d.t}</div>
+            <div style="font-family:'Space Mono',monospace;font-size:11px;color:${sc};margin-left:6px;">${m}%</div>
+          </div>
+          <div class="pb"><div class="pf" style="width:${m}%;background:${d.col};"></div></div>
+          <div style="font-size:10px;color:var(--text4);margin-top:2px;">Domain ${d.c} · ${d.w}% of exam</div>
+        </div>
+      </div>
+    </div>`;}).join("");}
+  // Badges
+  const bc=document.getElementById("h-badges");
+  if(bc){bc.innerHTML=S.badges.slice(0,8).map(b=>`<div class="badge ${b.e?"on":""}" title="${b.n}"><span style="filter:${b.e?"none":"grayscale(1) opacity(.25)"};">${b.icon}</span></div>`).join("");}
+  if(r>=50)earnBadge("r5");if(r>=80)earnBadge("r8");
+  if(S.streak>=3)earnBadge("s3");if(S.streak>=7)earnBadge("s7");if(S.streak>=14)earnBadge("s14");
+}
+function domIcon(id){return{d1:"🌐",d2:"🔧",d3:"⚙️",d4:"🔒",d5:"🔍"}[id]||"📡";}
+function saveExamDate(){
+  const v=document.getElementById("ed-input").value;
+  if(v){S.examDate=v;sv();toast("Exam date saved");closeM("m-examdate");rfHome();}
+}
+// ═══════════════════════════════════════════════════════════
+// STUDY NAV
+// ═══════════════════════════════════════════════════════════
+function renderSN(){
+  const el=document.getElementById("sn-c");if(!el)return;
+  el.innerHTML=`<div class="sh">Study by Domain</div>`+DOM.map(d=>{
+    const m=domMastery(d.id);
+    const k=Object.values(S.dp[d.id].cards).filter(v=>v>=3).length;
+    return`<div class="card" style="margin-bottom:8px;cursor:pointer;" onclick="openDom('${d.id}')">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div style="width:40px;height:40px;border-radius:10px;background:${d.col}18;border:1px solid ${d.col}40;display:flex;align-items:center;justify-content:center;font-size:19px;">${domIcon(d.id)}</div>
+        <div style="flex:1;">
+          <div style="font-size:14px;font-weight:700;margin-bottom:1px;">${d.t}</div>
+          <div style="font-size:11px;color:var(--text3);">Domain ${d.c} · ${d.w}% · ${k}/${FC[d.id].length} mastered</div>
+          <div class="pb" style="margin-top:5px;"><div class="pf" style="width:${m}%;background:${d.col};"></div></div>
+        </div>
+        <span style="color:var(--text4);">→</span>
+      </div>
+    </div>`;}).join("")+
+    `<div class="sh" style="margin-top:14px;">Study Modes</div>
+    <div class="card" style="cursor:pointer;margin-bottom:8px;" onclick="qstart('wr')"><div style="display:flex;align-items:center;gap:12px;"><span style="font-size:24px;">🎯</span><div><div style="font-weight:700;">Weak Area Review</div><div style="font-size:12px;color:var(--text3);">Cards rated Again or Hard</div></div></div></div>
+    <div class="card" style="cursor:pointer;margin-bottom:8px;" onclick="qstart('mf')"><div style="display:flex;align-items:center;gap:12px;"><span style="font-size:24px;">🔀</span><div><div style="font-weight:700;">Mixed Review</div><div style="font-size:12px;color:var(--text3);">All domains shuffled</div></div></div></div>
+    <div class="card" style="cursor:pointer;" onclick="goscr('s-notes');renderNotes();"><div style="display:flex;align-items:center;gap:12px;"><span style="font-size:24px;">📓</span><div><div style="font-weight:700;">My Notes</div><div style="font-size:12px;color:var(--text3);">${S.notes.length} notes</div></div></div></div>`;
+}
+
+// ═══════════════════════════════════════════════════════════
+// DOMAIN SCREEN — FIXED: no goscr inside renderStd
+// ═══════════════════════════════════════════════════════════
+let activeStdTab="ov";
+function openDom(did){
+  curDom=did;
+  const d=DOM.find(x=>x.id===did);
+  document.getElementById("std-t").textContent=d.t;
+  document.getElementById("std-s").textContent="Domain "+d.c+" · "+d.w+"% of exam";
+  activeStdTab="ov";
+  document.querySelectorAll("#s-study .tab").forEach((b,i)=>b.classList.toggle("on",i===0));
+  goscr("s-study");
+  renderStd();
+}
+function stdTab(tab){
+  activeStdTab=tab;
+  document.querySelectorAll("#s-study .tab").forEach(b=>{
+    b.classList.toggle("on",b.getAttribute("onclick").includes("'"+tab+"'"));
+  });
+  if(tab==="fc"){
+    launchFlash(curDom);goscr("s-flash");
+  }else if(tab==="qz"){
+    launchDomQuiz(curDom);goscr("s-quiz");
+  }else{
+    renderStd();
+  }
+}
+function renderStd(){
+  const el=document.getElementById("std-content");if(!el)return;
+  const d=DOM.find(x=>x.id===curDom),p=S.dp[curDom],cards=FC[curDom];
+  const k=Object.values(p.cards).filter(v=>v>=3).length,m=domMastery(curDom);
+  const dqs=QS.filter(q=>q.d===curDom);
+  if(activeStdTab==="ov"){
+    el.innerHTML=`<div class="g2" style="margin-bottom:12px;">
+      <div class="sb"><div class="sn" style="color:${d.col};">${m}%</div><div class="sl">Mastery</div></div>
+      <div class="sb"><div class="sn" style="color:var(--g);">${k}/${cards.length}</div><div class="sl">Cards Known</div></div>
+    </div>
+    <div class="card" style="margin-bottom:10px;">
+      <div style="font-size:11px;font-weight:700;color:${d.col};margin-bottom:8px;letter-spacing:.5px;">TOPICS</div>
+      ${getTopics(curDom).map(t=>`<div style="display:flex;gap:8px;align-items:flex-start;padding:6px 0;border-bottom:1px solid var(--border);font-size:13px;line-height:1.4;"><span style="color:${d.col};font-size:10px;margin-top:3px;">▸</span>${t}</div>`).join("")}
+    </div>
+    <div class="br">
+      <button class="btn bf" style="background:${d.col}20;border-color:${d.col}60;color:${d.col};" onclick="stdTab('fc')">🃏 Flashcards (${cards.length})</button>
+      <button class="btn bf" style="background:var(--g)20;border-color:var(--g)60;color:var(--g);" onclick="stdTab('qz')">📝 Quiz (${dqs.length}Q)</button>
+    </div>
+    <button class="btn bf bg" style="margin-top:8px;" onclick="stdTab('ai')">🤖 AI Tutor</button>`;
+  }else if(activeStdTab==="ai"){
+    renderAI(el,curDom);
+  }
+}
+function getTopics(did){
+  return{
+    d1:["OSI 7-Layer Model & TCP/IP Stack","Network Topologies (3-tier, spine-leaf, mesh)","Network Types (LAN, WAN, MAN, SAN, PAN)","IPv4 Addressing, Classes, CIDR, VLSM","IPv6 Addressing, NDP, Dual-Stack, Tunneling","Cloud Concepts (IaaS, PaaS, SaaS)","DHCP, DNS, ARP, NAT, ICMP","Subnetting & CIDR Calculations","TCP vs UDP, Ports & Protocols","Routing Concepts, Administrative Distance"],
+    d2:["VLANs & 802.1Q Trunking","STP, RSTP, PortFast, BPDU Guard","Port Security, DHCP Snooping, DAI","Routing Protocols (OSPF, BGP, EIGRP, RIP)","Cable Standards (Cat5e/6/6a, SMF, MMF)","Connectors (LC, SC, ST, MPO) & Transceivers (SFP/QSFP)","Wireless (802.11a/b/g/n/ac/ax, Channels, WPA2/3)","PoE Standards (af/at/bt)","WAN Technologies (MPLS, SD-WAN, DSL)","Port Aggregation (LACP)"],
+    d3:["SNMP (v1/v2c/v3), Traps, MIB","NetFlow, sFlow, IPFIX, Port Mirroring","Syslog Severities & Log Management","RTO, RPO, MTTR, MTBF, Availability","FHRP (HSRP, VRRP, GLBP)","DNS Record Types (A, AAAA, CNAME, MX, PTR)","DHCP Scopes, Relay Agent, Snooping","NTP Hierarchy & Stratum","Change Management & Documentation","SLAs, Baselines, Network Diagrams"],
+    d4:["CIA Triad & AAA (RADIUS vs TACACS+)","Attack Types (DoS, MitM, Phishing, VLAN Hopping)","DNS Poisoning, Rogue AP, ARP Spoofing","Firewall Types (Packet, Stateful, NGFW)","IDS vs IPS — Detection vs Prevention","802.1X, EAP Types (PEAP, EAP-TLS)","WEP/WPA2/WPA3 Security","PKI, TLS, AES, RSA, IPSec (AH vs ESP)","ACLs, DMZ, Zero Trust, Least Privilege","Physical Security (Mantrap, Badge, CCTV)"],
+    d5:["CompTIA 6-Step Troubleshooting Methodology","OSI Bottom-Up / Top-Down / Divide-and-Conquer","Physical Issues (CRC errors, Late collisions)","IP Issues (Duplicate IP, APIPA, MTU Mismatch)","DNS & DHCP Troubleshooting","Wireless Troubleshooting (Signal vs Performance)","Security Issues (ARP Poisoning, Rogue Devices)","CLI Tools (ping, tracert, nslookup, netstat, arp)","Advanced Tools (nmap, Wireshark, OTDR, TDR)","Routing & VLAN Troubleshooting"],
+  }[did]||[];
+}
+
+// ═══════════════════════════════════════════════════════════
+// FLASHCARD ENGINE — FIXED: no bare event global
+// ═══════════════════════════════════════════════════════════
+let fCards=[],fIdx=0,fFlip=false,fDid=null,fShowRate=false;
+function launchFlash(did){
+  fDid=did;fIdx=0;fFlip=false;fShowRate=false;
+  fCards=FC[did].map((c,i)=>({...c,oi:i,did}));
+  const d=DOM.find(x=>x.id===did);
+  document.getElementById("ft").textContent=d.t+" Flashcards";
+  document.getElementById("fs").textContent="Domain "+d.c;
+  const tabs=document.getElementById("f-tabs");
+  tabs.innerHTML="";tabs.style.display="none";
+  rfCard();
+}
+function qstart(mode){
+  if(mode==="mf"){
+    fCards=[];DOM.forEach(d=>FC[d.id].forEach((c,i)=>fCards.push({...c,oi:i,did:d.id})));
+    fCards=shuf(fCards);fDid=null;fIdx=0;fFlip=false;fShowRate=false;
+    document.getElementById("ft").textContent="Mixed Flashcards";
+    document.getElementById("fs").textContent="All domains shuffled";
+    const tabs=document.getElementById("f-tabs");
+    tabs.style.display="flex";
+    tabs.innerHTML=`<button class="tab on" onclick="flashFilter('all',this)">All</button>`+
+      DOM.map(d=>`<button class="tab" onclick="flashFilter('${d.id}',this)">${d.c}</button>`).join("");
+    rfCard();goscr("s-flash");
+  }else if(mode==="wr"){
+    fCards=[];
+    DOM.forEach(d=>FC[d.id].forEach((c,i)=>{
+      if((S.dp[d.id].cards[i]||0)<2)fCards.push({...c,oi:i,did:d.id});
+    }));
+    if(!fCards.length){toast("No weak cards yet! Keep studying.");return;}
+    fCards=shuf(fCards);fDid=null;fIdx=0;fFlip=false;fShowRate=false;
+    document.getElementById("ft").textContent="Weak Area Review";
+    document.getElementById("fs").textContent=fCards.length+" cards";
+    document.getElementById("f-tabs").innerHTML="";
+    document.getElementById("f-tabs").style.display="none";
+    rfCard();goscr("s-flash");
+  }else if(mode==="qq"){
+    launchQuiz(shuf(QS).slice(0,10),"Quick Quiz (10Q)");goscr("s-quiz");
+  }
+}
+// FIXED: accepts btn element as parameter instead of using bare 'event'
+function flashFilter(did,btn){
+  if(did==="all"){
+    fCards=[];DOM.forEach(d=>FC[d.id].forEach((c,i)=>fCards.push({...c,oi:i,did:d.id})));
+    fCards=shuf(fCards);
+  }else{
+    fCards=FC[did].map((c,i)=>({...c,oi:i,did}));
+  }
+  fIdx=0;fFlip=false;fShowRate=false;
+  document.querySelectorAll("#f-tabs .tab").forEach(b=>b.classList.remove("on"));
+  if(btn)btn.classList.add("on");
+  rfCard();
+}
+function rfCard(){
+  const el=document.getElementById("f-content");
+  const ctr=document.getElementById("fc");
+  if(fIdx>=fCards.length){
+    if(ctr)ctr.textContent="Done!";
+    el.innerHTML=`<div style="text-align:center;padding:36px 16px;">
+      <div style="font-size:52px;margin-bottom:12px;">🎯</div>
+      <div style="font-size:21px;font-weight:700;margin-bottom:8px;">Session Complete!</div>
+      <div style="font-size:14px;color:var(--text2);margin-bottom:22px;">${fCards.length} cards reviewed</div>
+      <button class="btn bp bf" onclick="fIdx=0;fFlip=false;fCards=shuf(fCards);rfCard();">🔀 Shuffle &amp; Repeat</button>
+      <button class="btn bg bf" style="margin-top:8px;" onclick="goback()">← Back</button>
+    </div>`;return;
+  }
+  const card=fCards[fIdx];
+  const d=DOM.find(x=>x.id===card.did);
+  const conf=S.dp[card.did].cards[card.oi]||0;
+  if(ctr)ctr.textContent=(fIdx+1)+"/"+fCards.length;
+  el.innerHTML=`
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+      <span class="pill" style="background:${d.col}18;color:${d.col};border:1px solid ${d.col}40;font-size:10px;">${d.c} ${d.t.split(" ")[0]}</span>
+      <span style="font-size:11px;color:var(--text4);">Conf: ${["—","Low","Med","High","★"][conf]||"—"}</span>
+    </div>
+    <div class="fc-wrap${fFlip?" flipped":""}" id="fcw" onclick="flipCard()">
+      <div class="fc-inner" style="position:relative;">
+        <div class="fc-f" style="background:var(--bg3);border-color:${d.col}40;">
+          <div style="font-size:10px;color:var(--text4);letter-spacing:2px;margin-bottom:12px;text-transform:uppercase;">Question — tap to reveal</div>
+          <div style="font-size:17px;font-weight:700;line-height:1.45;">${card.q}</div>
+        </div>
+        <div class="fc-b" style="border-color:${d.col};">
+          <div style="font-size:10px;color:${d.col};letter-spacing:2px;margin-bottom:12px;text-transform:uppercase;">Answer</div>
+          <div style="font-size:14px;line-height:1.6;color:var(--text);">${card.a}</div>
+        </div>
+      </div>
+    </div>
+    <div id="fc-rate" style="display:${fFlip?"flex":"none"};gap:8px;margin-top:12px;">
+      <button class="btn bf" style="background:var(--r)18;border-color:var(--r)40;color:var(--r);font-size:12px;" onclick="rateCard(1)">Again</button>
+      <button class="btn bf" style="background:var(--y)18;border-color:var(--y)40;color:var(--y);font-size:12px;" onclick="rateCard(2)">Hard</button>
+      <button class="btn bf" style="background:var(--a)18;border-color:var(--a)40;color:var(--a);font-size:12px;" onclick="rateCard(3)">Good</button>
+      <button class="btn bf" style="background:var(--g)18;border-color:var(--g)40;color:var(--g);font-size:12px;" onclick="rateCard(4)">Easy</button>
+    </div>
+    <div id="fc-nav" style="display:${fFlip?"none":"flex"};gap:8px;margin-top:12px;">
+      <button class="btn bf bg" onclick="fIdx=Math.max(0,fIdx-1);fFlip=false;rfCard()">← Prev</button>
+      <button class="btn bf bg" onclick="fIdx++;fFlip=false;rfCard()">Skip →</button>
+    </div>`;
+  earnBadge("ff");
+}
+function flipCard(){
+  fFlip=!fFlip;
+  const fw=document.getElementById("fcw");if(fw)fw.className="fc-wrap"+(fFlip?" flipped":"");
+  const r=document.getElementById("fc-rate");if(r)r.style.display=fFlip?"flex":"none";
+  const n=document.getElementById("fc-nav");if(n)n.style.display=fFlip?"none":"flex";
+}
+function rateCard(rating){
+  const card=fCards[fIdx];
+  S.dp[card.did].cards[card.oi]=rating;
+  S.dp[card.did].ts[card.oi]=Date.now();
+  addXP(rating>=3?3:1,"Flashcard");
+  S.dailyDone=Math.min(S.dailyGoal,S.dailyDone+1);
+  if(rating<=2){
+    const ri=Math.min(fCards.length,fIdx+3+Math.floor(Math.random()*3));
+    fCards.splice(ri,0,{...card});
+  }
+  const dk=Object.values(S.dp[card.did].cards).filter(v=>v>=3).length;
+  if(dk===FC[card.did].length)earnBadge("dc");
+  const totalDone=Object.values(S.dp).reduce((s,p)=>s+Object.keys(p.cards).length,0);
+  if(totalDone>=50)earnBadge("cs");
+  fIdx++;fFlip=false;rfCard();sv();
+}
+
+// ═══════════════════════════════════════════════════════════
+// QUIZ ENGINE
+// ═══════════════════════════════════════════════════════════
+function launchQuiz(qs,title){
+  QST={qs,title,idx:0,score:0,answered:[],sel:undefined,showEx:false};
+  document.getElementById("qt").textContent=title;
+  rfQuiz();
+}
+function launchDomQuiz(did){
+  const qs=shuf(QS.filter(q=>q.d===did));
+  launchQuiz(qs,DOM.find(x=>x.id===did).t+" Quiz");
+}
+function rfQuiz(){
+  const el=document.getElementById("q-content");
+  const{qs,idx,score,answered,sel,showEx}=QST;
+  const pct=qs.length?(idx/qs.length)*100:0;
+  const qpEl=document.getElementById("qprog");if(qpEl)qpEl.style.width=pct+"%";
+  const qctEl=document.getElementById("qct");if(qctEl)qctEl.textContent=idx+"/"+qs.length+" ✓"+score;
+  if(idx>=qs.length){
+    const p=qs.length?Math.round((score/qs.length)*100):0;
+    const g=p>=90?"🏆":p>=75?"🎯":p>=60?"📈":"📚";
+    el.innerHTML=`<div style="text-align:center;padding:28px 10px;">
+      <div style="font-size:52px;margin-bottom:10px;">${g}</div>
+      <div style="font-size:26px;font-weight:700;">${score}/${qs.length}</div>
+      <div style="font-size:14px;color:var(--text2);margin:5px 0 18px;">${p}% — ${p>=75?"Passing":"Keep studying"}</div>
+      <div style="display:flex;gap:5px;flex-wrap:wrap;justify-content:center;margin-bottom:22px;">
+        ${answered.map(a=>`<div style="width:24px;height:24px;border-radius:5px;background:${a?"var(--g)":"var(--r)"}18;border:1px solid ${a?"var(--g)":"var(--r)"};display:flex;align-items:center;justify-content:center;font-size:10px;">${a?"✓":"✗"}</div>`).join("")}
+      </div>
+      <button class="btn bp bf" onclick="launchQuiz(shuf(QST.qs),QST.title);rfQuiz();">Retake</button>
+      <button class="btn bg bf" style="margin-top:8px;" onclick="goback()">← Done</button>
+    </div>`;
+    if(p===100)earnBadge("pq");
+    S.qhist.push({date:new Date().toLocaleDateString(),p,n:qs.length});
+    if(S.qhist.length>30)S.qhist=S.qhist.slice(-30);
+    sv();return;
+  }
+  const q=qs[idx];const d=DOM.find(x=>x.id===q.d);
+  el.innerHTML=`
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+      <span class="pill" style="background:${d.col}18;color:${d.col};border:1px solid ${d.col}40;font-size:10px;">${q.obj}</span>
+    </div>
+    <div class="card" style="margin-bottom:12px;border-color:var(--border2);">
+      <div style="font-size:14px;line-height:1.65;">${q.q}</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:7px;" id="qa-opts">
+      ${q.o.map((opt,i)=>{
+        let st="background:var(--bg3);border-color:var(--border2);color:var(--text2);";let ic="";
+        if(sel!==undefined){
+          if(i===q.a){st="background:var(--g)18;border-color:var(--g);color:var(--g);";ic="✓ ";}
+          else if(i===sel&&i!==q.a){st="background:var(--r)18;border-color:var(--r);color:var(--r);";ic="✗ ";}
+          else{st="background:var(--bg3);border-color:var(--border);color:var(--text4);";}
+        }
+        const click=sel!==undefined?"":"selAns("+i+")";
+        return`<button style="border:1.5px solid;border-radius:9px;padding:12px 13px;font-family:'Syne',sans-serif;font-size:13px;text-align:left;cursor:${sel!==undefined?"default":"pointer"};${st};min-height:44px;" onclick="${click}">
+          <span style="opacity:.4;margin-right:7px;">${String.fromCharCode(65+i)}.</span>${ic}${opt}
+        </button>`;
+      }).join("")}
+    </div>
+    ${showEx?`<div style="background:#0a1525;border:1px solid var(--a)30;border-radius:9px;padding:13px;margin-top:12px;">
+      <div style="font-size:10px;color:var(--a);letter-spacing:1.5px;margin-bottom:7px;text-transform:uppercase;">Explanation</div>
+      <div style="font-size:13px;color:var(--text2);line-height:1.65;">${q.ex}</div>
+      ${q.wr?`<div style="margin-top:10px;"><div style="font-size:10px;color:var(--text4);letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;">Why others are wrong:</div>
+        ${q.o.filter((_,i)=>i!==q.a).map((opt,i)=>`<div style="font-size:12px;color:var(--text3);margin-bottom:4px;line-height:1.5;"><span style="color:var(--r);">✗</span> <strong>${opt}</strong>: ${q.wr[i]||""}</div>`).join("")}
+      </div>`:""}
+    </div>
+    <button class="btn bp bf" style="margin-top:10px;" onclick="nextQ()">${idx+1>=qs.length?"See Results →":"Next →"}</button>`:""}`;
+  earnBadge("fq");
+}
+function selAns(i){
+  QST.sel=i;QST.showEx=true;
+  const q=QST.qs[QST.idx];const correct=i===q.a;
+  if(correct){QST.score++;S.tqc++;}
+  QST.answered.push(correct);S.tqa++;
+  addXP(correct?5:1,correct?"Correct!":"Keep going");
+  const p=S.dp[q.d];if(correct)p.qc++;p.qt++;
+  if(S.tqa>=100)earnBadge("c1");
+  if(S.tqa>=500)earnBadge("q500");
+  rfQuiz();
+}
+function nextQ(){QST.idx++;QST.sel=undefined;QST.showEx=false;rfQuiz();}
+// ═══════════════════════════════════════════════════════════
+// AI TUTOR
+// ═══════════════════════════════════════════════════════════
+function renderAI(el,did){
+  const d=did?DOM.find(x=>x.id===did):null;
+  const sugg=did?[
+    `Explain key concepts in ${d.t}`,
+    "What are the exam traps for this domain?",
+    "Give me a mnemonic for this",
+    "Most frequently tested topics?"
+  ]:[
+    "What should I study first?",
+    "Explain subnetting step by step",
+    "Key ports to memorize",
+    "Biggest exam traps"
+  ];
+  el.innerHTML=`<div style="margin-bottom:10px;font-size:11px;color:var(--text4);">Offline AI Tutor — built-in N10-009 knowledge base</div>
+    <div id="ai-msgs" style="display:flex;flex-direction:column;gap:9px;margin-bottom:12px;">
+      <div style="background:var(--bg4);border-radius:14px;padding:11px 14px;font-size:13px;color:var(--text2);max-width:92%;">👋 I'm your Network+ tutor. Ask me anything about exam concepts, traps, or study strategy.</div>
+    </div>
+    <div style="margin-bottom:10px;">
+      <div style="font-size:10px;color:var(--text4);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;">Quick Questions</div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;">${sugg.map(s=>`<button style="background:var(--bg4);border:1px solid var(--border2);border-radius:8px;padding:7px 11px;color:var(--text3);font-family:'Syne',sans-serif;font-size:12px;cursor:pointer;min-height:36px;" onclick="aiAsk('${s.replace(/'/g,"&#39;").replace(/"/g,"&quot;")}')">${s}</button>`).join("")}</div>
+    </div>
+    <div style="display:flex;gap:8px;">
+      <input type="text" id="ai-in" placeholder="Ask a Network+ question..."
+        autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false"
+        enterkeyhint="send"
+        onkeydown="if(event.key==='Enter')aiAsk()" style="flex:1;">
+      <button class="btn bp" style="padding:10px 15px;flex-shrink:0;" onclick="aiAsk()">→</button>
+    </div>`;
+}
+function aiAsk(pre){
+  const inp=document.getElementById("ai-in");
+  const q=(pre||inp&&inp.value||"").trim();
+  if(!q)return;if(inp)inp.value="";
+  const msgs=document.getElementById("ai-msgs");if(!msgs)return;
+  msgs.innerHTML+=`<div style="background:var(--a);border-radius:14px 14px 4px 14px;padding:10px 13px;font-size:13px;color:#000;align-self:flex-end;max-width:88%;margin-left:auto;">${pre?pre.replace(/&amp;/g,"&").replace(/&quot;/g,'"').replace(/&#39;/g,"'"):q}</div>`;
+  msgs.innerHTML+=`<div id="ai-think" style="background:var(--bg4);border-radius:14px;padding:10px 13px;max-width:80%;"><div class="think"><span></span><span></span><span></span></div></div>`;
+  msgs.scrollTop=msgs.scrollHeight;
+  setTimeout(()=>{
+    const resp=genAIResp(q.toLowerCase());
+    const think=document.getElementById("ai-think");if(think)think.remove();
+    msgs.innerHTML+=`<div style="background:var(--bg4);border-radius:4px 14px 14px 14px;padding:11px 13px;font-size:13px;color:var(--text);line-height:1.65;max-width:93%;">${resp}</div>`;
+    msgs.scrollTop=msgs.scrollHeight;
+  },400+Math.random()*600);
+}
+function genAIResp(q){
+  for(const[k,v]of Object.entries(AI_KB)){
+    if(q.includes(k))return`<strong>${k.toUpperCase()}:</strong><br>${v}`;
+  }
+  if(q.includes("layer")||q.includes("osi"))return`<strong>OSI MODEL:</strong><br>${AI_KB.osi}`;
+  if(q.includes("wireless")||q.includes("802.11")||q.includes("wifi")||q.includes("wi-fi"))return`<strong>WIRELESS:</strong><br>${AI_KB.wifi}`;
+  if(q.includes("trap")||q.includes("trick")||q.includes("gotcha")||q.includes("watch out"))return`<strong>EXAM TRAPS:</strong><br>${AI_KB.traps}`;
+  if(q.includes("mnemonic")||q.includes("remember")||q.includes("memory")||q.includes("memorize"))return`📝 <strong>Key Mnemonics:</strong><br><br>• OSI: "Please Do Not Throw Sausage Pizza Away"<br>• Syslog: "Every Awesome Cisco Engineer Will Need Ice Daily"<br>• DHCP: DORA (Discover→Offer→Request→Acknowledge)<br>• AD: "Can Stan Ever Observe Running Independently?" (Connected=0, Static=1, EIGRP=90, OSPF=110, RIP=120, iBGP=200)<br>• PoE: af=15W, at=30W, bt=60-100W`;
+  if(q.includes("cloud")||q.includes("iaas")||q.includes("paas")||q.includes("saas"))return`<strong>CLOUD:</strong><br>${AI_KB.cloud}`;
+  if(q.includes("ipv6")||q.includes("ip version 6"))return`<strong>IPv6:</strong><br>${AI_KB.ipv6}`;
+  if(q.includes("d1")||q.includes("domain 1")||q.includes("networking concept"))return AI_KB.osi+"<br><br>"+AI_KB.subnet;
+  if(q.includes("d4")||q.includes("domain 4")||q.includes("security"))return AI_KB.security;
+  if(q.includes("d5")||q.includes("domain 5")||q.includes("troubleshoot"))return AI_KB.troubleshoot;
+  if(q.includes("pass")||q.includes("study")||q.includes("first")||q.includes("prepare")||q.includes("schedule"))return AI_KB.pass;
+  const allCards=Object.values(FC).flat();
+  const match=allCards.find(c=>q.split(" ").some(w=>w.length>4&&(c.q.toLowerCase().includes(w)||c.a.toLowerCase().includes(w))));
+  if(match)return`<strong>${match.q}</strong><br><br>${match.a}`;
+  return`I don't have specific data on that exact question. Try asking about: OSI layers, subnetting, ports, DHCP, DNS, VLANs, routing protocols, wireless, IPSec, cloud, or troubleshooting methodology. You can also use the Flashcards tab to browse all concepts.`;
+}
+
+// ═══════════════════════════════════════════════════════════
+// MOCK EXAM — FIXED: now uses 60 QS correctly distributed
+// ═══════════════════════════════════════════════════════════
+function startMockExam(){
+  const cnt={d1:16,d2:12,d3:9,d4:11,d5:12};
+  const qs=[];
+  DOM.forEach(d=>{
+    const avail=shuf(QS.filter(q=>q.d===d.id));
+    qs.push(...avail.slice(0,cnt[d.id]));
+  });
+  EXS={qs:shuf(qs),idx:0,score:0,answered:[],timeLeft:5400,flags:{}};
+  document.getElementById("ex-t").textContent=`Mock Exam (${qs.length}Q)`;
+  rfExam();startExTimer();goscr("s-exam");
+}
+let exTI;
+function startExTimer(){
+  clearInterval(exTI);
+  exTI=setInterval(()=>{
+    EXS.timeLeft--;
+    const m=Math.floor(EXS.timeLeft/60),s=EXS.timeLeft%60;
+    const timEl=document.getElementById("ex-tim");
+    if(timEl)timEl.textContent=m+":"+(s<10?"0":"")+s;
+    const expEl=document.getElementById("ex-p");
+    if(expEl)expEl.style.width=((5400-EXS.timeLeft)/5400*100)+"%";
+    if(EXS.timeLeft<=0){clearInterval(exTI);finishExam();}
+    if(EXS.timeLeft===300)toast("⏰ 5 minutes remaining!");
+  },1000);
+}
+function rfExam(){
+  const el=document.getElementById("ex-content");
+  const{qs,idx,flags}=EXS;
+  if(idx>=qs.length){finishExam();return;}
+  const q=qs[idx];const d=DOM.find(x=>x.id===q.d);
+  const ans=EXS.answered[idx];
+  el.innerHTML=`
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:11px;">
+      <span class="pill" style="background:${d.col}18;color:${d.col};border:1px solid ${d.col}40;font-size:10px;">${q.obj}</span>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <button style="background:none;border:none;cursor:pointer;font-size:16px;" onclick="EXS.flags[EXS.idx]=!EXS.flags[EXS.idx];rfExam();" title="Flag for review">${flags[idx]?"🚩":"⚑"}</button>
+        <span style="font-size:11px;color:var(--text3);">${idx+1}/${qs.length}</span>
+      </div>
+    </div>
+    <div class="card" style="margin-bottom:12px;">
+      <div style="font-size:14px;line-height:1.65;">${q.q}</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:7px;">
+      ${q.o.map((opt,i)=>{
+        const sel=ans!==undefined&&ans.sel===i;
+        const st=sel?"background:var(--a)18;border-color:var(--a);color:var(--a);":"background:var(--bg3);border-color:var(--border2);color:var(--text2);";
+        return`<button style="border:1.5px solid;border-radius:9px;padding:12px 13px;font-family:'Syne',sans-serif;font-size:13px;text-align:left;cursor:pointer;${st};min-height:44px;transition:all .15s;" onclick="exAns(${i})">
+          <span style="opacity:.4;margin-right:7px;">${String.fromCharCode(65+i)}.</span>${opt}
+        </button>`;
+      }).join("")}
+    </div>
+    <div class="br" style="margin-top:12px;">
+      ${idx>0?`<button class="btn bg" onclick="EXS.idx--;rfExam()">← Prev</button>`:""}
+      <button class="btn bg" style="margin-left:auto;" onclick="EXS.idx++;rfExam()">Skip →</button>
+      ${idx===qs.length-1?`<button class="btn bp" onclick="finishExam()">Finish</button>`:""}
+    </div>`;
+}
+function exAns(i){
+  EXS.answered[EXS.idx]={sel:i,ok:i===EXS.qs[EXS.idx].a};
+  EXS.idx++;rfExam();
+}
+function finishExam(){
+  clearInterval(exTI);earnBadge("ex");
+  const{qs,answered}=EXS;
+  let score=0;
+  const ds={};DOM.forEach(d=>{ds[d.id]={c:0,t:0};});
+  qs.forEach((q,i)=>{const a=answered[i];ds[q.d].t++;if(a&&a.ok){score++;ds[q.d].c++;}});
+  const p=Math.round((score/qs.length)*100);const pass=p>=75;
+  document.getElementById("ex-content").innerHTML=`
+    <div style="text-align:center;margin-bottom:22px;">
+      <div style="font-size:52px;margin-bottom:10px;">${pass?"🎓":"📚"}</div>
+      <div style="font-size:26px;font-weight:700;">${score}/${qs.length}</div>
+      <div style="font-size:15px;color:${pass?"var(--g)":"var(--r)"};font-weight:700;margin:3px 0;">${p}% — ${pass?"PASS ✓":"NOT YET"}</div>
+      <div style="font-size:11px;color:var(--text3);">Passing score: 75% (720/900 scaled)</div>
+    </div>
+    <div class="sh">Domain Breakdown</div>
+    ${DOM.map(d=>{const dp=ds[d.id];const pp=dp.t?Math.round((dp.c/dp.t)*100):0;
+      return`<div class="card" style="margin-bottom:6px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;">
+          <div style="font-size:13px;font-weight:600;">${d.t}</div>
+          <div style="font-family:'Space Mono',monospace;font-size:11px;color:${pp>=75?"var(--g)":pp>=60?"var(--y)":"var(--r)"};">${dp.c}/${dp.t} (${pp}%)</div>
+        </div>
+        <div class="pb"><div class="pf" style="width:${pp}%;background:${d.col};"></div></div>
+      </div>`;}).join("")}
+    <button class="btn bp bf" style="margin-top:12px;" onclick="goback()">← Return to Study</button>`;
+  addXP(pass?100:30,"Mock Exam");
+  S.qhist.push({date:new Date().toLocaleDateString(),p,n:qs.length,exam:true});
+  if(S.qhist.length>30)S.qhist=S.qhist.slice(-30);
+  sv();
+}
+function xexit(){openM("m-xexit");}
+function doExitExam(){closeM("m-xexit");clearInterval(exTI);goback();}
+
+// ═══════════════════════════════════════════════════════════
+// SUBNET LAB
+// ═══════════════════════════════════════════════════════════
+let subTabActive="practice";let curSub=null;let subState={};let subES={};
+function subTab(t){
+  subTabActive=t;
+  document.querySelectorAll("#s-sub .tab").forEach(b=>b.classList.toggle("on",b.getAttribute("onclick").includes("'"+t+"'")));
+  rfSub();
+}
+function rfSub(){
+  const el=document.getElementById("sub-c");if(!el)return;
+  if(subTabActive==="practice")rfSubPractice(el);
+  else if(subTabActive==="ref")rfSubRef(el);
+  else rfSubExam(el);
+}
+function rfSubPractice(el){
+  const diff=subState.diff||"easy";
+  const probs=SUBNET_PROBS[diff];
+  if(!curSub||subState.diff!==diff){subState.diff=diff;curSub=probs[Math.floor(Math.random()*probs.length)];subState.ans=false;subState.ok=null;}
+  const p=curSub;
+  el.innerHTML=`<div class="br" style="margin-bottom:12px;">
+    ${["easy","medium","hard"].map(d=>`<button class="btn bf ${diff===d?"bp":"bg"}" onclick="subState.diff='${d}';curSub=null;rfSub();">${d[0].toUpperCase()+d.slice(1)}</button>`).join("")}
+  </div>
+  <div class="card ca" style="margin-bottom:12px;">
+    <div style="font-size:10px;color:var(--a);letter-spacing:2px;margin-bottom:8px;text-transform:uppercase;">Problem</div>
+    <div style="font-family:'Space Mono',monospace;font-size:20px;font-weight:700;margin-bottom:6px;">${p.ip}/${p.cidr}</div>
+    <div style="font-size:14px;color:var(--text2);">${p.q}</div>
+  </div>
+  ${subState.ans?`<div class="card" style="border-color:${subState.ok?"var(--g)":"var(--r)"};background:${subState.ok?"var(--g)":"var(--r)"}10;margin-bottom:12px;">
+    <div style="font-size:14px;font-weight:700;color:${subState.ok?"var(--g)":"var(--r)"};">${subState.ok?"✓ Correct!":"✗ Not quite"}</div>
+    <div style="font-size:13px;margin-top:5px;">Answer: <span style="font-family:'Space Mono',monospace;color:var(--a);">${p.ans}</span></div>
+    <div style="font-size:12px;color:var(--text3);margin-top:4px;">💡 ${p.hint}</div>
+    ${subSolution(p)}
+  </div>
+  <button class="btn bp bf" onclick="curSub=null;subState.ans=false;rfSub();">Next Problem →</button>`
+  :`<input type="text" id="sub-ans" placeholder="Your answer..."
+      autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false" enterkeyhint="go"
+      style="margin-bottom:10px;" onkeydown="if(event.key==='Enter')checkSub()">
+   <button class="btn bp bf" onclick="checkSub()">Check Answer</button>
+   <div style="margin-top:8px;font-size:11px;color:var(--text4);">Hint: ${p.hint}</div>`}
+  <div style="margin-top:12px;font-size:12px;color:var(--text3);">✅ Solved: ${S.subs}</div>`;
+}
+function subSolution(p){
+  const hb=32-p.cidr;const tot=Math.pow(2,hb);const usable=Math.max(0,tot-2);
+  return`<div style="margin-top:10px;border-top:1px solid var(--border);padding-top:8px;">
+    <div style="font-size:10px;color:var(--text4);letter-spacing:1px;margin-bottom:5px;text-transform:uppercase;">Step-by-Step</div>
+    <div style="font-size:12px;color:var(--text3);line-height:1.9;">1. CIDR /${p.cidr} → Host bits = ${hb}<br>2. Total addresses = 2^${hb} = ${tot}<br>3. Usable hosts = ${tot} - 2 = ${usable}<br>4. Subnet mask = ${cidrMask(p.cidr)}<br>5. Block size = ${Math.pow(2,hb<8?hb:8)}</div>
+  </div>`;
+}
+function cidrMask(c){const m=["0.0.0.0","128.0.0.0","192.0.0.0","224.0.0.0","240.0.0.0","248.0.0.0","252.0.0.0","254.0.0.0","255.0.0.0","255.128.0.0","255.192.0.0","255.224.0.0","255.240.0.0","255.248.0.0","255.252.0.0","255.254.0.0","255.255.0.0","255.255.128.0","255.255.192.0","255.255.224.0","255.255.240.0","255.255.248.0","255.255.252.0","255.255.254.0","255.255.255.0","255.255.255.128","255.255.255.192","255.255.255.224","255.255.255.240","255.255.255.248","255.255.255.252","255.255.255.254","255.255.255.255"];return m[c]||"";}
+function checkSub(){
+  const inp=document.getElementById("sub-ans");if(!inp)return;
+  const v=inp.value.trim().toLowerCase().replace(/\s+/g,"");
+  const ex=curSub.ans.toLowerCase().replace(/\s+/g,"");
+  subState.ok=(v===ex);subState.ans=true;
+  if(subState.ok){S.subs++;addXP(8,"Subnetting");if(S.subs>=5)earnBadge("sp");}
+  sv();rfSub();
+}
+function rfSubRef(el){
+  const rows=[8,16,20,21,22,23,24,25,26,27,28,29,30,31,32];
+  el.innerHTML=`<div class="sh">CIDR Quick Reference</div>
+  <div style="overflow-x:auto;-webkit-overflow-scrolling:touch;">
+  <table style="width:100%;font-family:'Space Mono',monospace;font-size:11px;border-collapse:collapse;min-width:280px;">
+  <thead><tr style="color:var(--a);"><th style="text-align:left;padding:7px 4px;">CIDR</th><th style="text-align:left;padding:7px 4px;">Mask</th><th style="text-align:right;padding:7px 4px;">Hosts</th><th style="text-align:right;padding:7px 4px;">Block</th></tr></thead>
+  <tbody>${rows.map(c=>{const h=c>=32?1:c===31?2:Math.pow(2,32-c)-2;const b=c>=24?Math.pow(2,32-c):"-";
+    return`<tr style="border-top:1px solid var(--border);"><td style="padding:6px 4px;color:var(--a);">/${c}</td><td style="padding:6px 4px;color:var(--text2);">${cidrMask(c)}</td><td style="padding:6px 4px;text-align:right;">${typeof h==="number"?h.toLocaleString():h}</td><td style="padding:6px 4px;text-align:right;color:var(--text3);">${b}</td></tr>`;}).join("")}
+  </tbody></table></div>
+  <div class="sh" style="margin-top:14px;">Binary Cheat Sheet</div>
+  <div class="card"><div style="font-family:'Space Mono',monospace;font-size:12px;line-height:2;color:var(--text2);">128  64  32  16   8   4   2   1<br>────────────────────────────<br>/25 → 10000000 → 128<br>/26 → 11000000 → 192<br>/27 → 11100000 → 224<br>/28 → 11110000 → 240<br>/29 → 11111000 → 248<br>/30 → 11111100 → 252</div></div>`;
+}
+function rfSubExam(el){
+  if(!subES.active){
+    el.innerHTML=`<div class="card ca" style="text-align:center;padding:28px 18px;margin-bottom:12px;">
+      <div style="font-size:34px;margin-bottom:10px;">🧮</div>
+      <div style="font-size:17px;font-weight:700;margin-bottom:7px;">Subnetting Exam Mode</div>
+      <div style="font-size:13px;color:var(--text2);margin-bottom:18px;">10 problems · No hints · 5 minutes</div>
+      <button class="btn bp" onclick="startSubExam()">Start</button>
+    </div>`;return;
+  }
+  const{probs,idx,score,tLeft}=subES;
+  if(idx>=probs.length||tLeft<=0){
+    if(subES.ti)clearInterval(subES.ti);
+    el.innerHTML=`<div style="text-align:center;padding:28px;">
+      <div style="font-size:48px;margin-bottom:10px;">${score>=8?"🏆":score>=6?"🎯":"📚"}</div>
+      <div style="font-size:24px;font-weight:700;">${score}/10</div>
+      <div style="font-size:13px;color:var(--text2);margin-top:4px;">${Math.round(score*10)}%</div>
+      <button class="btn bp" style="margin-top:18px;" onclick="subES={};rfSub()">Retry</button>
+    </div>`;return;
+  }
+  const p=probs[idx];const m=Math.floor(tLeft/60),s=tLeft%60;
+  el.innerHTML=`<div style="display:flex;justify-content:space-between;margin-bottom:12px;">
+    <span style="font-size:13px;color:var(--text3);">${idx+1}/10</span>
+    <span style="font-family:'Space Mono',monospace;color:${tLeft<30?"var(--r)":"var(--o)"};">${m}:${s<10?"0":""}${s}</span>
+    <span style="font-size:13px;color:var(--g);">✓ ${score}</span>
+  </div>
+  <div class="card ca" style="margin-bottom:12px;">
+    <div style="font-family:'Space Mono',monospace;font-size:20px;font-weight:700;margin-bottom:6px;">${p.ip}/${p.cidr}</div>
+    <div style="font-size:14px;">${p.q}</div>
+  </div>
+  <input type="text" id="se-ans" placeholder="Answer..."
+    autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false" enterkeyhint="go"
+    onkeydown="if(event.key==='Enter')chkSubEx()" style="margin-bottom:10px;">
+  <button class="btn bp bf" onclick="chkSubEx()">Submit</button>`;
+  setTimeout(()=>{const inp=document.getElementById("se-ans");if(inp)inp.focus();},100);
+}
+function startSubExam(){
+  const all=[...SUBNET_PROBS.easy,...SUBNET_PROBS.medium,...SUBNET_PROBS.hard];
+  subES={active:true,probs:shuf(all).slice(0,10),idx:0,score:0,tLeft:300};
+  if(subES.ti)clearInterval(subES.ti);
+  subES.ti=setInterval(()=>{subES.tLeft--;rfSub();if(subES.tLeft<=0)clearInterval(subES.ti);},1000);
+  rfSub();
+}
+function chkSubEx(){
+  const inp=document.getElementById("se-ans");if(!inp)return;
+  const v=inp.value.trim().toLowerCase().replace(/\s+/g,"");
+  if(v===subES.probs[subES.idx].ans.toLowerCase().replace(/\s+/g,""))subES.score++;
+  subES.idx++;rfSub();
+}
+// ═══════════════════════════════════════════════════════════
+// PORTS LAB
+// ═══════════════════════════════════════════════════════════
+let portsTabActive="drill";let pDrill={};let pTimed={};
+function portsTab(t){
+  portsTabActive=t;
+  document.querySelectorAll("#s-ports .tab").forEach(b=>b.classList.toggle("on",b.getAttribute("onclick").includes("'"+t+"'")));
+  rfPorts();
+}
+function rfPorts(){
+  const el=document.getElementById("ports-c");if(!el)return;
+  if(portsTabActive==="drill")rfPortDrill(el);
+  else if(portsTabActive==="ref")rfPortRef(el);
+  else rfPortTimed(el);
+}
+function rfPortDrill(el){
+  if(!pDrill.cur){
+    pDrill.cur=PORTS[Math.floor(Math.random()*PORTS.length)];
+    pDrill.mode=Math.random()>.5?"p2n":"n2p";
+    pDrill.ans=false;pDrill.ok=null;
+  }
+  const p=pDrill.cur;
+  const q=pDrill.mode==="p2n"
+    ?`What protocol/service uses port <span style="font-family:'Space Mono',monospace;color:var(--a);font-size:20px;">${p.p}</span>?`
+    :`What port does <span style="font-family:'Space Mono',monospace;color:var(--a);font-size:20px;">${p.n}</span> use?`;
+  el.innerHTML=`<div class="card ca" style="text-align:center;padding:26px 16px;margin-bottom:12px;">
+    <div style="font-size:11px;color:var(--text4);letter-spacing:2px;margin-bottom:12px;text-transform:uppercase;">${pDrill.mode==="p2n"?"Port → Protocol":"Protocol → Port"}</div>
+    <div style="font-size:16px;line-height:1.6;">${q}</div>
+    ${pDrill.mode==="n2p"?`<div style="font-size:11px;color:var(--text3);margin-top:8px;">${p.d}</div>`:""}
+  </div>
+  ${pDrill.ans?`<div class="card" style="border-color:${pDrill.ok?"var(--g)":"var(--r)"};background:${pDrill.ok?"var(--g)":"var(--r)"}10;margin-bottom:12px;">
+    <div style="font-weight:700;color:${pDrill.ok?"var(--g)":"var(--r)"};">${pDrill.ok?"✓ Correct!":"✗ Wrong"}</div>
+    <div style="font-size:13px;margin-top:5px;font-family:'Space Mono',monospace;">Port ${p.p} = ${p.n}</div>
+    <div style="font-size:12px;color:var(--text3);margin-top:3px;">${p.d}</div>
+    <div style="font-size:11px;color:${p.s?"var(--g)":"var(--y)"};margin-top:3px;">${p.s?"🔒 Encrypted":"⚠️ Unencrypted"}${p.r?" · Secure alt: "+p.r:""}</div>
+  </div>
+  <button class="btn bp bf" onclick="pDrill={};rfPorts();">Next →</button>`
+  :`<input type="text" id="port-ans" placeholder="${pDrill.mode==="p2n"?"Protocol name...":"Port number..."}"
+      autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false" enterkeyhint="go"
+      onkeydown="if(event.key==='Enter')chkPort()" style="margin-bottom:10px;">
+   <button class="btn bp bf" onclick="chkPort()">Check</button>`}
+  <div style="margin-top:10px;font-size:12px;color:var(--text3);">Drilled: ${S.portsDone}</div>`;
+  if(!pDrill.ans)setTimeout(()=>{const i=document.getElementById("port-ans");if(i)i.focus();},100);
+}
+function chkPort(){
+  const inp=document.getElementById("port-ans");if(!inp)return;
+  const p=pDrill.cur;const v=inp.value.trim().toLowerCase();
+  let ok=false;
+  if(pDrill.mode==="p2n"){
+    const accepted=p.n.toLowerCase().split("/").map(x=>x.trim());
+    ok=accepted.some(a=>v===a||v===a.split(" ")[0]);
+  }else{
+    ok=parseInt(v)===p.p||v===String(p.p);
+  }
+  pDrill.ok=ok;pDrill.ans=true;
+  S.portsDone=(S.portsDone||0)+1;
+  if(ok)addXP(4,"Port Drill");
+  if(S.portsDone>=10)earnBadge("pm");
+  sv();rfPorts();
+}
+function rfPortRef(el){
+  const sec=PORTS.filter(p=>p.s);const unsec=PORTS.filter(p=>!p.s);
+  el.innerHTML=`<div class="sh">🔒 Secure / Encrypted</div>
+    ${sec.map(p=>`<div class="card" style="margin-bottom:6px;border-color:var(--g)20;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div style="font-family:'Space Mono',monospace;font-size:15px;font-weight:700;color:var(--g);min-width:48px;">${p.p}</div>
+        <div><div style="font-size:13px;font-weight:700;">${p.n}</div><div style="font-size:11px;color:var(--text3);">${p.d}</div></div>
+      </div>
+    </div>`).join("")}
+    <div class="sh" style="margin-top:12px;">⚠️ Unencrypted / Common</div>
+    ${unsec.map(p=>`<div class="card" style="margin-bottom:6px;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div style="font-family:'Space Mono',monospace;font-size:15px;font-weight:700;color:var(--a);min-width:48px;">${p.p}</div>
+        <div><div style="font-size:13px;font-weight:700;">${p.n}</div><div style="font-size:11px;color:var(--text3);">${p.d}${p.r?` · Secure: ${p.r}`:""}</div></div>
+      </div>
+    </div>`).join("")}`;
+}
+function rfPortTimed(el){
+  if(!pTimed.active){
+    el.innerHTML=`<div class="card ca" style="text-align:center;padding:28px 18px;margin-bottom:12px;">
+      <div style="font-size:34px;margin-bottom:10px;">⏱️</div>
+      <div style="font-size:17px;font-weight:700;margin-bottom:7px;">Timed Ports Quiz</div>
+      <div style="font-size:13px;color:var(--text2);margin-bottom:18px;">20 questions · 2 minutes</div>
+      <button class="btn bp" onclick="startTimedPorts()">Start</button>
+    </div>`;return;
+  }
+  const{qs,idx,score,tLeft}=pTimed;
+  if(idx>=qs.length||tLeft<=0){
+    if(pTimed.ti)clearInterval(pTimed.ti);
+    el.innerHTML=`<div style="text-align:center;padding:28px;">
+      <div style="font-size:46px;margin-bottom:10px;">${score>=16?"🏆":score>=12?"⭐":"📚"}</div>
+      <div style="font-size:24px;font-weight:700;">${score}/20</div>
+      <div style="font-size:13px;color:var(--text2);margin-top:4px;">${Math.round(score/20*100)}%</div>
+      <button class="btn bp" style="margin-top:18px;" onclick="pTimed={};rfPorts()">Retry</button>
+    </div>`;return;
+  }
+  const q=qs[idx];const m=Math.floor(tLeft/60),s=tLeft%60;
+  el.innerHTML=`<div style="display:flex;justify-content:space-between;margin-bottom:12px;">
+    <span style="font-size:13px;color:var(--text3);">${idx+1}/20</span>
+    <span style="font-family:'Space Mono',monospace;color:${tLeft<30?"var(--r)":"var(--o)"};">${m}:${s<10?"0":""}${s}</span>
+    <span style="font-size:13px;color:var(--g);">✓ ${score}</span>
+  </div>
+  <div class="card ca" style="text-align:center;padding:18px;margin-bottom:12px;">
+    <div style="font-size:11px;color:var(--text4);letter-spacing:2px;margin-bottom:8px;text-transform:uppercase;">What port?</div>
+    <div style="font-family:'Space Mono',monospace;font-size:20px;font-weight:700;">${q.n}</div>
+    <div style="font-size:12px;color:var(--text3);margin-top:4px;">${q.d}</div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+    ${q.opts.map(o=>`<button style="background:var(--bg3);border:1.5px solid var(--border2);border-radius:9px;padding:14px;font-family:'Space Mono',monospace;font-size:15px;cursor:pointer;color:var(--text2);min-height:52px;" onclick="timedPortAns(${o})">${o}</button>`).join("")}
+  </div>`;
+}
+function startTimedPorts(){
+  const qs=shuf(PORTS).slice(0,20).map(p=>{
+    const wo=shuf(PORTS.filter(x=>x.p!==p.p)).slice(0,3).map(x=>x.p);
+    return{...p,opts:shuf([p.p,...wo])};
+  });
+  pTimed={active:true,qs,idx:0,score:0,tLeft:120};
+  if(pTimed.ti)clearInterval(pTimed.ti);
+  pTimed.ti=setInterval(()=>{pTimed.tLeft--;rfPorts();if(pTimed.tLeft<=0)clearInterval(pTimed.ti);},1000);
+  rfPorts();
+}
+function timedPortAns(p){
+  if(p===pTimed.qs[pTimed.idx].p)pTimed.score++;
+  pTimed.idx++;rfPorts();
+}
+
+// ═══════════════════════════════════════════════════════════
+// TROUBLESHOOTING LAB
+// ═══════════════════════════════════════════════════════════
+let tState={};
+function rfTrbl(){
+  const el=document.getElementById("trbl-c");if(!el)return;
+  if(tState.sel===undefined){
+    el.innerHTML=`<div class="sh">Select a Scenario (${TRBL.length} available)</div>`+
+      TRBL.map((s,i)=>{
+        const dc=s.diff==="Easy"?"var(--g)":s.diff==="Medium"?"var(--y)":"var(--r)";
+        return`<div class="card" style="cursor:pointer;margin-bottom:8px;" onclick="tState.sel=${i};rfTrbl();">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span style="font-size:20px;">🔍</span>
+            <div style="flex:1;">
+              <div style="font-size:14px;font-weight:700;">${s.title}</div>
+              <div style="font-size:11px;color:var(--text3);margin-top:2px;">${s.scenario.slice(0,80)}...</div>
+            </div>
+            <span class="pill" style="background:${dc}20;color:${dc};border:1px solid ${dc}40;font-size:10px;flex-shrink:0;">${s.diff}</span>
+          </div>
+        </div>`;}).join("");return;
+  }
+  const s=TRBL[tState.sel];
+  el.innerHTML=`<button class="btn bg" style="margin-bottom:12px;padding:8px 0;font-size:13px;width:100%;" onclick="tState={};rfTrbl();">← All Scenarios</button>
+  <div class="scenario-box" style="margin-bottom:12px;">
+    <div style="font-size:10px;color:var(--y);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:7px;">Scenario</div>
+    <div style="font-size:14px;line-height:1.65;">${s.scenario}</div>
+  </div>
+  <div class="card" style="margin-bottom:12px;">
+    <div style="font-size:11px;color:var(--text4);letter-spacing:1px;text-transform:uppercase;margin-bottom:7px;">Observed Symptoms</div>
+    ${s.syms.map(x=>`<div style="display:flex;gap:8px;align-items:flex-start;padding:5px 0;font-size:13px;"><span style="color:var(--r);font-size:10px;margin-top:3px;">●</span>${x}</div>`).join("")}
+  </div>
+  ${tState.ans!==undefined?`
+    <div class="card" style="border-color:${tState.ans?"var(--g)":"var(--r)"};background:${tState.ans?"var(--g)":"var(--r)"}10;margin-bottom:12px;">
+      <div style="font-size:14px;font-weight:700;color:${tState.ans?"var(--g)":"var(--r)"};">${tState.ans?"✓ Correct diagnosis!":"✗ Not quite — here's why:"}</div>
+      <div style="margin-top:10px;">
+        <div style="font-size:11px;color:var(--text4);letter-spacing:1px;margin-bottom:4px;text-transform:uppercase;">Root Cause</div>
+        <div style="font-size:13px;line-height:1.65;">${s.root}</div>
+      </div>
+      <div style="margin-top:10px;">
+        <div style="font-size:11px;color:var(--a);letter-spacing:1px;margin-bottom:4px;text-transform:uppercase;">Resolution Steps</div>
+        <div style="font-size:13px;line-height:1.7;color:var(--text2);">${s.fix}</div>
+      </div>
+    </div>
+    <button class="btn bp bf" onclick="tState={};rfTrbl();">← Back to Scenarios</button>
+  `:`<div style="font-size:13px;font-weight:700;margin-bottom:10px;color:var(--text2);">What is the BEST course of action?</div>
+    <div style="display:flex;flex-direction:column;gap:7px;">
+      ${s.opts.map((c,i)=>`<button style="background:var(--bg3);border:1.5px solid var(--border2);border-radius:9px;padding:12px 13px;font-family:'Syne',sans-serif;font-size:13px;text-align:left;cursor:pointer;color:var(--text2);min-height:44px;" onclick="chkTrbl(${i})">
+        <span style="opacity:.4;margin-right:7px;">${String.fromCharCode(65+i)}.</span>${c}
+      </button>`).join("")}
+    </div>`}`;
+}
+function chkTrbl(i){
+  const s=TRBL[tState.sel];tState.ans=(i===s.ans);
+  if(tState.ans){S.trbld++;addXP(10,"Troubleshooting");earnBadge("ts");}
+  else addXP(2,"Attempt");
+  sv();rfTrbl();
+}
+
+// ═══════════════════════════════════════════════════════════
+// PRACTICE NAV
+// ═══════════════════════════════════════════════════════════
+function renderPN(){
+  const el=document.getElementById("pn-c");if(!el)return;
+  const acc=S.tqa>0?Math.round((S.tqc/S.tqa)*100):0;
+  el.innerHTML=`<div class="g2" style="margin-bottom:12px;">
+    <div class="sb"><div class="sn">${S.tqa}</div><div class="sl">Questions</div></div>
+    <div class="sb"><div class="sn" style="color:${acc>=75?"var(--g)":acc>=60?"var(--y)":"var(--r)"};">${acc}%</div><div class="sl">Accuracy</div></div>
+  </div>
+  <div class="sh">Practice Modes</div>
+  ${[
+    {i:"⚡",t:"Quick Quiz — 10 Questions",s:"Random from all domains",f:"launchQuiz(shuf(QS).slice(0,10),'Quick Quiz');goscr('s-quiz');"},
+    {i:"📋",t:"Domain Quiz",s:"All questions for one domain",f:"showDomPicker()"},
+    {i:"🎓",t:"Mock Exam — 60Q / 90 min",s:"Simulates real exam conditions",f:"startMockExam()"},
+    {i:"🔄",t:"Weak Area Focus",s:"Questions from low-scoring domains",f:"launchQuiz(getWeakQ(),'Weak Area Focus');goscr('s-quiz');"},
+    {i:"💨",t:"Rapid Fire — 20Q",s:"Fast practice, no explanations",f:"launchQuiz(shuf(QS).slice(0,20),'Rapid Fire');goscr('s-quiz');"},
+    {i:"🔍",t:"Troubleshooting Only",s:"Domain 5 scenario questions",f:"launchQuiz(shuf(QS.filter(q=>q.d==='d5')),'Troubleshooting');goscr('s-quiz');"},
+    {i:"🔒",t:"Security Only",s:"Domain 4 security questions",f:"launchQuiz(shuf(QS.filter(q=>q.d==='d4')),'Security');goscr('s-quiz');"},
+  ].map(m=>`<div class="card" style="cursor:pointer;margin-bottom:8px;" onclick="${m.f}">
+    <div style="display:flex;align-items:center;gap:12px;">
+      <span style="font-size:24px;">${m.i}</span>
+      <div><div style="font-weight:700;">${m.t}</div><div style="font-size:12px;color:var(--text3);">${m.s}</div></div>
+      <span style="margin-left:auto;color:var(--text4);">→</span>
+    </div>
+  </div>`).join("")}`;
+}
+function showDomPicker(){
+  const existing=document.getElementById("dpick");
+  if(existing){existing.remove();return;}
+  const el=document.getElementById("pn-c");
+  const div=document.createElement("div");
+  div.id="dpick";div.className="card";div.style.marginBottom="12px";
+  div.innerHTML=`<div style="font-weight:700;margin-bottom:10px;">Select Domain:</div>`+
+    DOM.map(d=>`<button class="btn bf bg" style="margin-bottom:6px;border-color:${d.col}40;color:${d.col};" onclick="launchQuiz(shuf(QS.filter(q=>q.d==='${d.id}')),'${d.t} Quiz');goscr('s-quiz');">${d.t} (${QS.filter(q=>q.d===d.id).length}Q)</button>`).join("");
+  el.insertBefore(div,el.firstChild);
+}
+function getWeakQ(){
+  const w=[];
+  DOM.forEach(d=>{const p=S.dp[d.id];if(!p.qt||p.qc/p.qt<.7)w.push(...QS.filter(q=>q.d===d.id));});
+  return w.length?shuf(w):shuf(QS);
+}
+
+// ═══════════════════════════════════════════════════════════
+// LABS NAV
+// ═══════════════════════════════════════════════════════════
+function renderLN(){
+  const el=document.getElementById("ln-c");if(!el)return;
+  el.innerHTML=`<div class="sh">Available Labs</div>
+    <div class="card" style="cursor:pointer;margin-bottom:8px;" onclick="goscr('s-trbl');tState={};rfTrbl();">
+      <div style="display:flex;align-items:center;gap:12px;"><span style="font-size:24px;">🔍</span><div><div style="font-weight:700;">Troubleshooting Scenarios</div><div style="font-size:12px;color:var(--text3);">${TRBL.length} realistic network problems</div></div><span style="margin-left:auto;color:var(--text4);">→</span></div>
+    </div>
+    <div class="card" style="cursor:pointer;margin-bottom:8px;" onclick="goscr('s-sub');subTab('practice');">
+      <div style="display:flex;align-items:center;gap:12px;"><span style="font-size:24px;">🧮</span><div><div style="font-weight:700;">Subnetting Lab</div><div style="font-size:12px;color:var(--text3);">Practice, reference, exam mode</div></div><span style="margin-left:auto;color:var(--text4);">→</span></div>
+    </div>
+    <div class="card" style="cursor:pointer;margin-bottom:8px;" onclick="goscr('s-ports');portsTab('drill');">
+      <div style="display:flex;align-items:center;gap:12px;"><span style="font-size:24px;">🔌</span><div><div style="font-weight:700;">Ports &amp; Protocols</div><div style="font-size:12px;color:var(--text3);">${PORTS.length} ports — drill, reference, timed</div></div><span style="margin-left:auto;color:var(--text4);">→</span></div>
+    </div>
+    <div class="sh" style="margin-top:14px;">AI Tutor</div>
+    <div class="card" id="ai-entry" style="cursor:pointer;">
+      <div style="display:flex;align-items:center;gap:12px;"><span style="font-size:24px;">🤖</span><div><div style="font-weight:700;">Open AI Tutor</div><div style="font-size:12px;color:var(--text3);">Ask anything — built-in knowledge base</div></div></div>
+    </div>`;
+  document.getElementById("ai-entry").onclick=function(){
+    renderAI(document.getElementById("ln-c"),null);
+  };
+}
+
+// ═══════════════════════════════════════════════════════════
+// STATS — with quiz history chart
+// ═══════════════════════════════════════════════════════════
+function renderStats(){
+  const el=document.getElementById("stats-c");if(!el)return;
+  const r=calcReady();
+  const acc=S.tqa>0?Math.round((S.tqc/S.tqa)*100):0;
+  const scores=DOM.map(d=>({d,m:domMastery(d.id)}));
+  const weak=scores.reduce((a,b)=>a.m<b.m?a:b);
+  const strong=scores.reduce((a,b)=>a.m>b.m?a:b);
+  const hist=S.qhist.slice(-10);
+  el.innerHTML=`
+  <div class="card ca" style="margin-bottom:12px;">
+    <div style="display:flex;align-items:center;gap:14px;">
+      <div style="position:relative;flex-shrink:0;">
+        <svg width="72" height="72" class="ring-svg"><circle class="rt" cx="36" cy="36" r="29" stroke-width="6"/><circle class="rf" cx="36" cy="36" r="29" stroke="${r>=75?"var(--g)":r>=50?"var(--y)":"var(--a)"}" stroke-width="6" stroke-dasharray="182.2" stroke-dashoffset="${182.2-(r/100)*182.2}"/></svg>
+        <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+          <div style="font-family:'Space Mono',monospace;font-size:16px;font-weight:700;">${r}%</div>
+          <div style="font-size:8px;color:var(--text4);">READY</div>
+        </div>
+      </div>
+      <div style="flex:1;">
+        <div style="font-size:15px;font-weight:700;margin-bottom:3px;">Exam Readiness</div>
+        <div style="font-size:12px;color:var(--text3);margin-bottom:7px;">${r>=80?"Ready to schedule! 🎓":r>=60?"Getting close — keep going":"Build your foundation first"}</div>
+        <div style="font-size:11px;color:var(--text4);">Target: 80%+ before booking</div>
+      </div>
+    </div>
+  </div>
+  <div class="g2" style="margin-bottom:12px;">
+    <div class="sb"><div class="sn">${S.xp}</div><div class="sl">Total XP</div></div>
+    <div class="sb"><div class="sn">${S.streak}</div><div class="sl">Streak 🔥</div></div>
+    <div class="sb"><div class="sn">${S.tqa}</div><div class="sl">Questions</div></div>
+    <div class="sb"><div class="sn" style="color:${acc>=75?"var(--g)":acc>=60?"var(--y)":"var(--r)"};">${acc}%</div><div class="sl">Accuracy</div></div>
+  </div>
+  ${hist.length>1?`<div class="sh">Recent Quiz Scores</div>
+  <div class="card" style="margin-bottom:12px;">
+    <div class="bar-chart">
+      ${hist.map(h=>`<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;">
+        <div style="font-size:9px;color:${h.p>=75?"var(--g)":h.p>=60?"var(--y)":"var(--r)"};">${h.p}%</div>
+        <div class="bar" style="width:100%;height:${Math.max(6,h.p*0.5)}px;background:${h.p>=75?"var(--g)":h.p>=60?"var(--y)":"var(--r)"};"></div>
+        <div style="font-size:8px;color:var(--text4);writing-mode:vertical-lr;transform:rotate(180deg);height:30px;">${h.date.split("/").slice(0,2).join("/")}</div>
+      </div>`).join("")}
+    </div>
+    <div style="font-size:10px;color:var(--text4);margin-top:6px;">Pass line: 75% — last ${hist.length} quizzes shown</div>
+  </div>`:""}
+  <div class="sh">Domain Mastery</div>
+  ${scores.map(({d,m})=>`<div class="card" style="margin-bottom:6px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;">
+      <div style="font-size:13px;font-weight:600;">${d.t}</div>
+      <div style="font-family:'Space Mono',monospace;font-size:11px;color:${m>=70?"var(--g)":m>=40?"var(--y)":"var(--r)"};">${m}%</div>
+    </div>
+    <div class="pb"><div class="pf" style="width:${m}%;background:${d.col};"></div></div>
+    <div style="font-size:10px;color:var(--text4);margin-top:3px;">${d.w}% of exam weight</div>
+  </div>`).join("")}
+  <div class="sh" style="margin-top:12px;">Insights</div>
+  <div class="card" style="margin-bottom:12px;">
+    <div style="font-size:12px;color:var(--text3);margin-bottom:6px;">💪 Strongest: <span style="color:var(--g);font-weight:700;">${strong.d.t} (${strong.m}%)</span></div>
+    <div style="font-size:12px;color:var(--text3);margin-bottom:6px;">🎯 Focus on: <span style="color:var(--y);font-weight:700;">${weak.d.t} (${weak.m}%)</span></div>
+    <div style="font-size:12px;color:var(--text3);margin-bottom:6px;">🃏 Cards done: ${Object.values(S.dp).reduce((s,p)=>s+Object.keys(p.cards).length,0)}</div>
+    <div style="font-size:12px;color:var(--text3);">🧮 Subnets solved: ${S.subs} · 🔌 Ports drilled: ${S.portsDone||0} · 🔍 Scenarios: ${S.trbld}</div>
+  </div>
+  <div class="sh">Achievements (${S.badges.filter(b=>b.e).length}/${S.badges.length})</div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:12px;">
+    ${S.badges.map(b=>`<div style="text-align:center;">
+      <div class="badge ${b.e?"on":""}" style="margin:0 auto 3px;width:40px;height:40px;border-radius:10px;">
+        <span style="font-size:19px;filter:${b.e?"none":"grayscale(1) opacity(.2)"};">${b.icon}</span>
+      </div>
+      <div style="font-size:9px;color:${b.e?"var(--text2)":"var(--text4)"};line-height:1.3;">${b.n}</div>
+    </div>`).join("")}
+  </div>`;
+}
+function doReset(){
+  S={xp:0,lvl:1,streak:0,lastDay:"",examDate:S.examDate||"",
+    dailyGoal:20,dailyDone:0,
+    badges:JSON.parse(JSON.stringify(BADGES)),
+    dp:{d1:{cards:{},ts:{},qc:0,qt:0},d2:{cards:{},ts:{},qc:0,qt:0},d3:{cards:{},ts:{},qc:0,qt:0},d4:{cards:{},ts:{},qc:0,qt:0},d5:{cards:{},ts:{},qc:0,qt:0}},
+    tqa:0,tqc:0,subs:0,portsDone:0,trbld:0,notes:[],qhist:[]};
+  sv();renderStats();rfHome();toast("Progress reset");
+}
+
+// ═══════════════════════════════════════════════════════════
+// NOTES
+// ═══════════════════════════════════════════════════════════
+let editNoteId=null;
+function openNote(id){
+  editNoteId=id||null;
+  const n=id?S.notes.find(x=>x.id===id):null;
+  document.getElementById("nm-t").textContent=id?"Edit Note":"New Note";
+  document.getElementById("ni-title").value=n?n.title:"";
+  document.getElementById("ni-body").value=n?n.body:"";
+  document.getElementById("ni-tags").value=n?(n.tags||[]).join(", "):"";
+  openM("m-note");
+}
+function saveNote(){
+  const t=document.getElementById("ni-title").value.trim();
+  const b=document.getElementById("ni-body").value.trim();
+  const tags=document.getElementById("ni-tags").value.split(",").map(x=>x.trim()).filter(Boolean);
+  if(!t&&!b){toast("Add a title or content");return;}
+  if(editNoteId){
+    const n=S.notes.find(x=>x.id===editNoteId);
+    if(n){n.title=t||"Untitled";n.body=b;n.tags=tags;n.upd=Date.now();}
+  }else{
+    S.notes.unshift({id:Date.now().toString(),title:t||"Untitled",body:b,tags,cre:Date.now(),upd:Date.now()});
+    earnBadge("nt");
+  }
+  sv();closeM("m-note");renderNotes();toast("Note saved");
+}
+function delNote(id){
+  openConfirm("Delete note?","This cannot be undone.",()=>{
+    S.notes=S.notes.filter(n=>n.id!==id);sv();renderNotes();toast("Note deleted");
+  });
+}
+function renderNotes(){
+  const el=document.getElementById("notes-c");if(!el)return;
+  const srch=(document.getElementById("note-srch")||{value:""}).value.toLowerCase();
+  const notes=S.notes.filter(n=>!srch||
+    n.title.toLowerCase().includes(srch)||
+    n.body.toLowerCase().includes(srch)||
+    (n.tags||[]).some(t=>t.toLowerCase().includes(srch)));
+  if(!notes.length){
+    el.innerHTML=`<div style="text-align:center;padding:36px 16px;color:var(--text4);">
+      <div style="font-size:38px;margin-bottom:10px;">📓</div>
+      <div style="font-size:13px;">${srch?"No notes match your search":"No notes yet — tap + New to create one"}</div>
+    </div>`;return;
+  }
+  el.innerHTML=notes.map(n=>`<div class="card" style="margin-bottom:9px;">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:5px;">
+      <div style="font-size:14px;font-weight:700;flex:1;margin-right:8px;">${n.title}</div>
+      <div style="display:flex;gap:6px;flex-shrink:0;">
+        <button style="background:none;border:none;color:var(--text4);cursor:pointer;font-size:16px;min-width:32px;min-height:32px;" onclick="openNote('${n.id}')">✏️</button>
+        <button style="background:none;border:none;color:var(--r);cursor:pointer;font-size:16px;min-width:32px;min-height:32px;" onclick="delNote('${n.id}')">🗑</button>
+      </div>
+    </div>
+    ${n.body?`<div style="font-size:13px;color:var(--text2);line-height:1.5;margin-bottom:7px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;">${n.body}</div>`:""}
+    <div style="display:flex;gap:3px;flex-wrap:wrap;align-items:center;">
+      ${(n.tags||[]).map(t=>`<span class="tag">#${t}</span>`).join("")}
+      <span style="margin-left:auto;font-size:10px;color:var(--text4);">${new Date(n.upd).toLocaleDateString()}</span>
+    </div>
+  </div>`).join("");
+}
+
+// ═══════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════
+ld();
+document.getElementById("s-home").classList.add("active");
+rfHome();
+
+// Close modals on backdrop tap
+document.querySelectorAll(".mbg").forEach(m=>{
+  m.addEventListener("click",e=>{if(e.target===m)m.classList.remove("open");});
+});
+
+// Prevent body bounce on iOS
+document.body.addEventListener("touchmove",e=>{
+  if(e.target===document.body)e.preventDefault();
+},{passive:false});
+
+// Pre-set exam date input to today if empty
+const edInput=document.getElementById("ed-input");
+if(edInput){
+  if(S.examDate)edInput.value=S.examDate;
+  else{const d=new Date();d.setDate(d.getDate()+30);edInput.value=d.toISOString().split("T")[0];}
+}
+</script>
+</body>
+</html>
